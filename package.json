@@ -1,0 +1,24 @@
+{
+  "name": "ask",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start ecosystem.config.js --env production",
+    "stop": "pm2 stop ecosystem.config.js --env production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/byAhmadAli/ask.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/byAhmadAli/ask/issues"
+  },
+  "homepage": "https://github.com/byAhmadAli/ask#readme",
+  "dependencies": {
+    "pm2": "^4.2.3"
+  }
+}
