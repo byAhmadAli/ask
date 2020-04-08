@@ -1,0 +1,21 @@
+
+.ask-radio-button {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+
+    & + label {
+        display: inline-block;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 25px;
+        margin: 5px;
+        color: $black;
+        background-color: lighten($secondary, 25%);
+    }
+
+    &:checked + label {
+        color: $white;
+        background-color: $primary;
+    }
+}

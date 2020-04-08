@@ -1,0 +1,111 @@
+.app-layout{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    left: 0;
+    background-color: #f5f6fa;
+    .content{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        padding-right: 60px;
+        height: 91vh;
+        top: 66px;
+        padding-top: 20px;
+        overflow-y: scroll;
+        &::-webkit-scrollbar-track
+        {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+            border-radius: 3px;
+            background-color: #F5F5F5;
+        }
+
+        &::-webkit-scrollbar
+        {
+            width: 8px;
+            background-color: #F5F5F5;
+        }
+
+        &::-webkit-scrollbar-thumb
+        {
+            border-radius: 3px;
+            
+            background-color: $secondary;
+        }
+        .head{
+            background-color: $white;
+            padding: 10px;
+            margin-bottom: 15px;
+            position: fixed;
+            top: 0;
+            z-index: 9;
+            width: 100%;
+        }
+        .form-answer{
+            max-width: 100%;
+        }
+    }
+    .main-nav{
+        position: absolute;
+        z-index: 9;
+        right: 0;
+        width: 60px;
+        height: 100%;
+        background-color: $primary;
+        text-align: center;
+        .item{
+            &.active{
+                > a{
+                    background-color: lighten($primary, 7%);
+                }
+            }
+            > a {
+                color: $white;
+                width: 100%;
+                display: block;
+                height: 60px;
+                line-height: 50px;
+                font-size: 25px;
+                span{
+                    display: none;
+                }
+                &:hover{
+                    background-color: lighten($primary, 7%);
+                }
+            }
+        }
+        
+    }
+
+    .no-content{
+        svg{
+            font-size: 100px;
+            color: $secondary;
+        }
+    }
+}
+
+@include media-breakpoint-between(xs, sm) {
+    .content{
+        padding-right: 0 !important;
+        padding-bottom: 60px !important;
+        height: 81vh !important;
+        .head{
+            text-align: center;
+        }
+    }
+    .main-nav{
+        bottom: 0;
+        width: 100%!important;
+        height: 60px!important;
+        .item{
+            display: inline-block;
+            > a {
+                width: 85px!important;
+                height: 60px!important;
+            }
+        }
+    }
+}

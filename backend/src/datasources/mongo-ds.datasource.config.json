@@ -1,0 +1,12 @@
+{
+  "name": "mongoDS",
+  "connector": "mongodb",
+  "url": "",
+  "host": "localhost",
+  "port": 27017,
+  "user": "",
+  "password": "",
+  "database": "ask-app",
+  "useNewUrlParser": true,
+  "useUnifiedTopology": true
+}

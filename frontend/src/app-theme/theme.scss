@@ -1,0 +1,13 @@
+@import './custom/variables';
+@import '~@laylazi/bootstrap-rtl-scss/scss/bootstrap-rtl';
+
+@import './custom/ask-radio-btn';
+@import './custom/card';
+
+// layout
+@import './custom/layout/auth';
+@import './custom/layout/app';
+
+// page
+@import './custom/pages/login';
+@import './custom/pages/ask';
