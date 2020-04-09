@@ -12,3 +12,31 @@
         left: 0;
     }
 }
+
+.answers{
+    margin-top: 1px;
+    margin-bottom: 30px;
+    .card{
+        margin:0;
+        margin-top: -1px;
+        .card-body{
+            padding: 10px;
+
+            .feeling{
+                background-color: #f5f6fa;
+                float: right;
+                margin-left: 10px;
+                font-size: 30px;
+                padding: 10px;
+                border-radius: 50%;
+            }
+            .description{
+                float: right;
+                h5{
+                    margin: 0;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}

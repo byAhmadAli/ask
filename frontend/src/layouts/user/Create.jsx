@@ -101,7 +101,7 @@ class Create extends Component{
                                 <div className="row">
                                     <form className="form-problem">                                        
                                         <div className="form-group">
-                                            <label>نوع المشكلة</label>
+                                            <label>تكلم هنا</label>
                                             <div className="ask-radio-button-wrapper">
                                                 {problemTypes.map((item, i) => {
                                                     return (

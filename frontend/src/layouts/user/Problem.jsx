@@ -12,7 +12,7 @@ class Problem extends Component{
             loading: true,
             loadingAnswers: true,
             feeling: "😂",
-            description: null
+            description: ""
         }
     }
 
@@ -86,6 +86,12 @@ class Problem extends Component{
         client.post(`${process.env.REACT_APP_API_URL}/problems/${id}/create/answer`, data)
         .then(res => {
             this.getAnswers();
+            this.setState({
+                feeling: "😂",
+                description: ""
+            }, () => {
+                document.getElementById("comment").reset();
+            })
         })
         .catch((error) => {
             console.log(error);
@@ -141,7 +147,7 @@ class Problem extends Component{
                     <div className="head">
                         <div className="container">
                             <div className="col-md-12">
-                                <h3>عرض المشلكة</h3>
+                                <h3>عرض المشكلة</h3>
                             </div>
                         </div>
                     </div>
@@ -174,12 +180,12 @@ class Problem extends Component{
                                             </div>
                                         </div>
                                     }
-                                    {problem.assigned && problem.user && 
+                                    {problem.assigned && problem.user && problem.status !== 'RESOLVED' &&
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <button 
                                                     onClick={this.resolve.bind(this)}
-                                                    className="btn btn-md btn-success float-left mb-3">حل المشلكة</button>
+                                                    className="btn btn-md btn-success float-left mb-3">حل المشكلة</button>
                                             </div>
                                         </div>
                                     }
@@ -187,10 +193,40 @@ class Problem extends Component{
                                         <div className="col-md-12">
                                             <h5>اجابات <span className="badge badge-primary">{answers.length}</span></h5>
                                         </div>
+                                    </div>
+                                    {loadingAnswers ? (
+                                        <div className="row">
+                                            <Loading color="primary" status="wait" />
+                                        </div>
+                                    ) : (
+                                        <div className="answers">
+                                            {answers.map((item, i) => {
+                                                return(
+                                                    <div key={i} className="row">
+                                                        <div className="col-md-12">
+                                                            <div className="card">
+                                                                <div className="card-body">
+                                                                    <div className="feeling">
+                                                                        {item.feeling}
+                                                                    </div>
+                                                                    <div className="description">
+                                                                        <h5 className="card-title">{item.who}</h5>
+                                                                        <p className="card-text">{item.description}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    )}
+
+                                    <div className="row">
                                         {((problem.assigned && problem.helper) || problem.user) && problem.status !== 'RESOLVED' && 
                                             <div className="col-md-12">
-                                                <div className="form-answer">
-                                                    <form className="">
+                                                <div className="form-answer p-0">
+                                                    <form id="comment">
                                                         <div className="form-group">
                                                             <label forhtml="inputDes">عبّر</label>
                                                             <div className="input-group mb-2">
@@ -216,28 +252,6 @@ class Problem extends Component{
                                             </div>
                                         }
                                     </div>
-                                    {loadingAnswers ? (
-                                        <div className="row">
-                                            <Loading color="primary" status="wait" />
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            {answers.map((item, i) => {
-                                                return(
-                                                    <div key={i} className="row">
-                                                        <div className="col-md-12">
-                                                            <div className="card">
-                                                                <div className="card-body">
-                                                                    <h5 className="card-title">{item.feeling} - {item.who}</h5>
-                                                                    <p className="card-text">{item.description}</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })}
-                                        </div>
-                                    )}
                                 </div>
                             )}
                         </div>

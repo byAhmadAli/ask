@@ -10,15 +10,14 @@
         width: 100%;
         top: 0;
         left: 0;
+        height: calc(100vh - calc(100vh - 100%));
         padding-right: 60px;
-        height: calc(91vh - calc(91vh - 100%));
-        top: 66px;
-        padding-top: 20px;
+        padding-bottom: 100px;
+        padding-top: 100px;
         overflow-y: scroll;
         &::-webkit-scrollbar-track
         {
             -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-            border-radius: 3px;
             background-color: #F5F5F5;
         }
 
@@ -30,8 +29,6 @@
 
         &::-webkit-scrollbar-thumb
         {
-            border-radius: 3px;
-            
             background-color: $secondary;
         }
         .head{
@@ -90,8 +87,6 @@
 @include media-breakpoint-between(xs, sm) {
     .content{
         padding-right: 0 !important;
-        padding-bottom: 60px !important;
-        height: 81vh !important;
         .head{
             text-align: center;
         }

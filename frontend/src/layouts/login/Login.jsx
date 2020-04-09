@@ -8,8 +8,8 @@ class Login extends Component{
         super(props);
         
         this.state = {
-            email: null,
-            password: null
+            email: "",
+            password: ""
         }
     }
 
@@ -40,9 +40,11 @@ class Login extends Component{
         );
 
         this.setState({
-            email: null,
-            password: null
-        }); 
+            email: "",
+            password: ""
+        }, ()=>{
+            document.getElementById("login").reset();
+        });
     }
 
     render(){
@@ -51,7 +53,7 @@ class Login extends Component{
             <div className="auth-layout">
                 <div className="col-xs-12 col-md-4">
                     <div className="row">
-                        <form className="form-signin">
+                        <form id="login" className="form-signin">
                             <h1 className="mb-3 font-weight-normal">
                                 <Link to="/">فضفض</Link>
                             </h1>

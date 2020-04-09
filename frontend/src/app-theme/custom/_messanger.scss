@@ -1,0 +1,112 @@
+// <div className="card" id="messanger">
+//     <div class="card-body inner">
+//         <div class="incoming">
+//             <p><span class="bubble">Hi</span></p>
+//             <p>
+//                 <span class="bubble">I have a question: can you explain what lorem ipsum is? I see it everywhere!</span>
+//             </p>
+//         </div>
+
+//         <div class="send">
+//             <p><span class="bubble">Oh hi :)</span></p>
+//             <p><span class="bubble">Sure I can!</span></p>
+//             <p><span class="bubble">Give me sec</span></p>
+//         </div>
+//     </div>
+//     <hr />
+//     <div className="form-answer">
+//         <form id="comment">
+//             <div className="form-group">
+//                 <div className="input-group mb-2">
+//                     <div className="input-group-prepend">
+//                         <Emoji 
+//                             name="feeling"
+//                             defaultValue={feeling}
+//                             onChange={this.onChange.bind(this)} />
+//                     </div>
+//                     <textarea 
+//                         onChange={this.onChange.bind(this)}
+//                         name="description"
+//                         defaultValue={description}
+//                         className="form-control" id="inputDes" rows="3" placeholder="بما تفكر؟"></textarea>
+//                 </div>
+//             </div>
+
+//             <button 
+//                 onClick={this.createAnswer.bind(this)}
+//                 className="btn btn-md btn-primary btn-block mb-3">ارسل</button>
+//         </form>
+//     </div>
+// </div>
+
+
+#messanger{
+    p {
+        margin: 4px 0;
+        position: relative;
+        &:only-child{
+            .bubble {
+                border-radius:16px!important;
+                -webkit-border-radius: 16px!important;
+                -moz-border-radius: 16px!important;
+            } 
+        } 
+    }
+    .incoming, .send {
+        position:relative;
+        margin-bottom: 1.5em;
+        .bubble {
+            background-color: #eee;
+            padding: 6px 12px;
+            border-radius: 16px;
+            display:inline-block;
+            max-width:70%;
+            border-radius: 4px 16px 16px 4px;
+            -webkit-border-radius: 4px 16px 16px 4px;
+            -moz-border-radius: 4px 16px 16px 4px;
+        }
+    }
+    .send{
+        .bubble {
+            background-color:#fabfab;
+            border-radius: 16px 4px 4px 16px;
+            -webkit-border-radius: 16px 4px 4px 16px;
+            -moz-border-radius: 16px 4px 4px 16px;
+        }
+        p{
+            &:first-child{
+                .bubble {
+                    border-radius: 16px 16px 4px 16px;
+                    -webkit-border-radius: 16px 16px 4px 16px;
+                    -moz-border-radius: 16px 16px 4px 16px;
+                }
+            }
+            &:last-child{
+                .bubble {
+                    border-radius: 16px 4px 16px 16px;
+                    -webkit-border-radius: 16px 4px 16px 16px;
+                    -moz-border-radius: 16px 4px 16px 16px;
+                }
+            }
+        }
+    }
+    .incoming{
+        p {
+            text-align: left;
+            &:first-child{
+                .bubble {
+                    border-radius: 16px 16px 16px 4px;
+                    -webkit-border-radius: 16px 16px 16px 4px;
+                    -moz-border-radius: 16px 16px 16px 4px;
+                }
+            }
+            &:last-child{
+                .bubble {
+                    border-radius: 4px 16px 16px 16px;
+                    -webkit-border-radius: 4px 16px 16px 16px;
+                    -moz-border-radius: 4px 16px 16px 16px;
+                }
+            }
+        }
+    }
+} 
