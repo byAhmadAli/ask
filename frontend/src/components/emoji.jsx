@@ -8,7 +8,7 @@ const Emoji = (props) => {
                 <input 
                     type="radio" 
                     className="ask-radio-button" 
-                    name={`${group}Feeling`}
+                    name={`feeling`}
                     value="😶"
                     id={`${group}-problem-type-none`}
                     defaultChecked={true}
@@ -21,7 +21,7 @@ const Emoji = (props) => {
                 <input 
                     type="radio" 
                     className="ask-radio-button" 
-                    name={`${group}Feeling`}
+                    name={`feeling`}
                     value="😭"
                     id={`${group}-problem-type-awful`}
                     onChange={onChange}
@@ -33,7 +33,7 @@ const Emoji = (props) => {
                 <input 
                     type="radio" 
                     className="ask-radio-button" 
-                    name={`${group}Feeling`}
+                    name={`feeling`}
                     value="😢"
                     id={`${group}-problem-type-bad`}
                     onChange={onChange}
@@ -45,7 +45,7 @@ const Emoji = (props) => {
                 <input 
                     type="radio" 
                     className="ask-radio-button" 
-                    name={`${group}Feeling`}
+                    name={`feeling`}
                     value="😐"
                     id={`${group}-problem-type-okay`}
                     onChange={onChange}
@@ -57,7 +57,7 @@ const Emoji = (props) => {
                 <input 
                     type="radio" 
                     className="ask-radio-button" 
-                    name={`${group}Feeling`} 
+                    name={`feeling`} 
                     value="😊"
                     id={`${group}-problem-type-good`}
                     onChange={onChange}
@@ -69,7 +69,7 @@ const Emoji = (props) => {
                 <input 
                     type="radio" 
                     className="ask-radio-button" 
-                    name={`${group}Feeling`}
+                    name={`feeling`}
                     value="😃"
                     id={`${group}-problem-type-great`}
                     onChange={onChange}
@@ -81,7 +81,7 @@ const Emoji = (props) => {
                 <input 
                     type="radio" 
                     className="ask-radio-button" 
-                    name={`${group}Feeling`}
+                    name={`feeling`}
                     value="😠"
                     id={`${group}-problem-type-angery`}
                     onChange={onChange}

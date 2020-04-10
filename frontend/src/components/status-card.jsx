@@ -11,7 +11,7 @@ class StatusCard extends Component {
         this.state = {
             problemTypes: [],
             loading: true,
-            statusFeeling: "😶",
+            feeling: "😶",
             description: "",
             type: "other"
         }
@@ -40,9 +40,9 @@ class StatusCard extends Component {
 
     createProblem(e){
         e.preventDefault();
-        let { statusFeeling, description, type } = this.state;
+        let { feeling, description, type } = this.state;
         let data = {
-            feeling: statusFeeling,
+            feeling,
             description,
             type
         }
