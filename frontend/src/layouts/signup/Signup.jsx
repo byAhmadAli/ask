@@ -1,21 +1,26 @@
 import React, {Component} from 'react';
-import signupImg from './signup.svg';
 import auth from '../../_services/Auth';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import client from '../../_utils/Client';
 
-class Login extends Component{
+const faker = require('faker');
+
+class Signup extends Component{
     constructor(props){
         super(props)
-        
+        console.log(props.location.state)
         this.state = {
             email: "",
-            password: ""
+            password: "",
+            nickname: ""
         }
     }
 
-    isAuthenticated () {
-        return auth.isAuthenticated() ? <Redirect from="/login" to="/app" /> : null
-    };
+    componentDidMount(){
+        this.setState({
+            nickname: faker.internet.userName().toLocaleLowerCase()
+        })
+    }
 
     onChange(e){
         let {value, name} = e.target;
@@ -28,15 +33,36 @@ class Login extends Component{
     signup(e){
         e.preventDefault();
 
-        const { email, password } = this.state;
+        const { email, password, nickname } = this.state;
         let data = {
             email,
-            password
+            password,
+            nickname
         }
         
         auth.signup(
             data,
-            () => {window.location.pathname = '/app'}
+            () => {
+                if(this.props.location.state){
+                    let { feeling, description, type } = this.props.location.state;
+                    let data = {
+                        feeling,
+                        description,
+                        type
+                    }
+
+                    client.post(`${process.env.REACT_APP_API_URL}/create/problem`, data)
+                    .then(res => {
+                        window.location.pathname = `/app/problems/${res.data.problem_id}`;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                }else{
+                    window.location.pathname = `/app`;
+                }
+                
+            }
         );
 
         this.setState({
@@ -48,51 +74,72 @@ class Login extends Component{
     }
 
     render(){
-        const { email, password } = this.state;
+        const { email, password, nickname } = this.state;
         return(
-            <div className="auth-layout">
-                <div className="col-xs-12 col-md-4">
-                    <div className="row">
-                        <form id="signup" className="form-signin">
-                            <h1 className="mb-3 font-weight-normal">
-                                <Link to="/">فضفض</Link>
-                            </h1>
-                            <h3>انشاء حساب جديد</h3>
-                            <label forhtml="inputEmail" className="sr-only">بريد الالكتروني</label>
-                            <input 
-                                onChange={this.onChange.bind(this)}
-                                name="email"
-                                defaultValue={email}
-                                type="email" id="inputEmail" className="form-control" placeholder="بريد الالكتروني" required="" />
-                            <label forhtml="inputPassword" className="sr-only">كلمة المرور</label>
-                            <input 
-                                onChange={this.onChange.bind(this)}
-                                name="password"
-                                defaultValue={password}
-                                type="password" id="inputPassword" className="form-control" placeholder="كلمة المرور" required="" />
+            <div className="form-signin">
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title">انشاء حساب جديد</h5>
+                        <form id="signup">
+                            <div className="form-group floating-label">
+                                <input 
+                                    onChange={this.onChange.bind(this)}
+                                    name="email"
+                                    defaultValue={email}
+                                    type="email" 
+                                    id="inputEmail" 
+                                    className="form-control" 
+                                    placeholder="بريد الالكتروني" 
+                                    required="" 
+                                />
+                                <label forhtml="inputEmail">بريد الالكتروني</label>
+                            </div>
+                            
+                            <div className="form-group floating-label">
+                                <input 
+                                    onChange={this.onChange.bind(this)}
+                                    name="nickname"
+                                    defaultValue={nickname}
+                                    type="text" 
+                                    id="inputNickname" 
+                                    className="form-control" 
+                                    placeholder="الاسم المستعار" 
+                                    required="" 
+                                />
+                                <label forhtml="inputNickname">الاسم المستعار</label>
+                            </div>
+                            
+                            <div className="form-group floating-label">
+                                <input 
+                                    onChange={this.onChange.bind(this)}
+                                    name="password"
+                                    defaultValue={password}
+                                    type="password" 
+                                    id="inputPassword" 
+                                    className="form-control" 
+                                    placeholder="كلمة المرور" 
+                                    required="" 
+                                />
+                                <label forhtml="inputPassword">كلمة المرور</label>
+                            </div>
+
                             <p>
                                 بالنقر على تسجيل، فانا اوافق على سياسية خصوصية فضفض وشروط الاستخدام
                             </p>
+                            <hr />
                             <button 
                                 onClick={this.signup.bind(this)}
                                 className="btn btn-md btn-primary btn-block mb-3">تسجيل</button>
-                            <p>لديك حساب؟ <Link to={
-                                    {pathname: '/login', state: this.props.location.state}
-                                }>تسجيل دخول</Link></p>
-                            
-                            
-                            <p className="mt-5 mb-3 text-muted">© 2020 فضفض</p>
                         </form>
                     </div>
                 </div>
-                <div className="col-md-8 auth-img d-none d-sm-block">
-                    <img src={signupImg} alt="signup" />
-                </div>
-                {this.isAuthenticated()}
+                <p>لديك حساب؟ <Link to={
+                    {pathname: '/auth/login', state: this.props.location.state}
+                }>تسجيل دخول</Link></p>
             </div>
             
         )
     }
 }
 
-export default Login;
+export default Signup;

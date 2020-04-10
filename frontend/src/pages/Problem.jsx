@@ -112,8 +112,29 @@ class Problem extends Component{
         });
     }
 
+    deleteProblem(){
+        const { id } = this.props.match.params;
+        client.patch(`${process.env.REACT_APP_API_URL}/problems/${id}/delete`)
+        .then(res => {
+            this.props.history.push(`/app/problems`);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    deleteAnswer(id){
+        client.patch(`${process.env.REACT_APP_API_URL}/answers/${id}/delete`)
+        .then(res => {
+            this.getAnswers();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
     render(){
-        const { problem, loading, loadingAnswers, answers, feeling, description } = this.state;
+        const { problem, loading, loadingAnswers, answers, description } = this.state;
         const { profile } = this.props;
         
         return(
@@ -143,7 +164,7 @@ class Problem extends Component{
                                     <div className="row">
                                         <div className="col-md-12">
                                             <button 
-                                                onClick={this.assigned.bind(this)}
+                                                onClick={this.deleteProblem.bind(this)}
                                                 className="btn btn-md btn-danger float-left mb-3">حذف</button>
                                         </div>
                                     </div>
@@ -184,13 +205,23 @@ class Problem extends Component{
                                                     <div className="col-md-12">
                                                         <div className="card">
                                                             <div className="card-body">
-                                                                <div className="feeling">
-                                                                    {item.feeling}
+                                                                <div className="clearfix">
+                                                                    <div className="feeling">
+                                                                        {item.feeling}
+                                                                    </div>
+                                                                    <div className="description">
+                                                                        <h5 className="card-title">{item.who}</h5>
+                                                                        <p className="card-text">{item.description}</p>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="description">
-                                                                    <h5 className="card-title">{item.who}</h5>
-                                                                    <p className="card-text">{item.description}</p>
-                                                                </div>
+                                                                {profile && profile.role.includes('ADMIN') &&
+                                                                    <div>
+                                                                        <hr />
+                                                                        <button 
+                                                                            onClick={this.deleteAnswer.bind(this, item.id)}
+                                                                            className="btn btn-md btn-danger float-left mb-3">حذف</button>
+                                                                    </div>
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
@@ -203,28 +234,27 @@ class Problem extends Component{
                                 <div className="row">
                                     {((problem.assigned && problem.helper) || problem.user) && problem.status !== 'RESOLVED' && 
                                         <div className="col-md-12">
-                                            <div className="form-answer p-0">
+                                            <div className="card status">
                                                 <form id="comment">
                                                     <div className="form-group">
-                                                        <label forhtml="inputDes">عبّر</label>
-                                                        <div className="input-group mb-2">
-                                                            <div className="input-group-prepend">
-                                                                <Emoji 
-                                                                    name="feeling"
-                                                                    defaultValue={feeling}
-                                                                    onChange={this.onChange.bind(this)} />
-                                                            </div>
-                                                            <textarea 
-                                                                onChange={this.onChange.bind(this)}
-                                                                name="description"
-                                                                defaultValue={description}
-                                                                className="form-control" id="inputDes" rows="3" placeholder="بما تفكر؟"></textarea>
+                                                        <textarea 
+                                                            onChange={this.onChange.bind(this)}
+                                                            name="description"
+                                                            defaultValue={description}
+                                                            className="form-control" id="inputDes" rows="3" placeholder="اكتب تعليقاً..."
+                                                        ></textarea>
+                                                        <div className="feeling">
+                                                            <Emoji 
+                                                                group="status"
+                                                                onChange={this.onChange.bind(this)} />
                                                         </div>
                                                     </div>
-
-                                                    <button 
-                                                        onClick={this.createAnswer.bind(this)}
-                                                        className="btn btn-md btn-primary btn-block mb-3">ارسل</button>
+                                                    <div className="card-body">
+                                                        <hr />
+                                                        <button 
+                                                            onClick={this.createAnswer.bind(this)}
+                                                            className="btn btn-md btn-primary btn-block mb-3">ارسل</button>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>

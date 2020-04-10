@@ -119,6 +119,7 @@ export class AnswerController {
         who = 'مُستخدم';
       }
       return {
+        id: item._id,
         feeling: item.feeling,
         description: item.description,
         owner,

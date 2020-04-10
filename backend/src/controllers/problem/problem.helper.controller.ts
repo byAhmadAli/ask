@@ -35,7 +35,7 @@ export class ProblemHelperController {
   ) {
     const problems = await this.problemRepository.find({ where: { status: "OPEN", deleted: false } });
 
-    return problems
+    return problems.sort((a: any, b: any) => b.createdAt - a.createdAt);
   }
 
   @get('/problems/assigned/me')
@@ -51,8 +51,8 @@ export class ProblemHelperController {
     const resolvedProblems = problems.filter(item => item.status === 'RESOLVED');
 
     return {
-      active_problems: activeProblems,
-      resolved_problems: resolvedProblems
+      active_problems: activeProblems.sort((a: any, b: any) => b.createdAt - a.createdAt),
+      resolved_problems: resolvedProblems.sort((a: any, b: any) => b.createdAt - a.createdAt)
     }
   }
 

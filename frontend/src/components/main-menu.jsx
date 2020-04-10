@@ -17,7 +17,7 @@ const MainMenu = (props) => {
                     <span>My Active Problems</span>
                 </NavLink>
             </div>
-            {profile && profile.role.includes('USER') && 
+            {/* {profile && profile.role.includes('USER') && 
                 <div className="item">
                     <NavLink exact activeClassName="active" to="/app/create">
                         <svg className="bi bi-chat-dots" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +27,7 @@ const MainMenu = (props) => {
                         <span>Create Problem</span>
                     </NavLink>
                 </div>
-            }
+            } */}
             {profile && profile.role.includes('HELPER') && 
                 <div className="item">
                     <NavLink exact activeClassName="active" to="/app/assigned">

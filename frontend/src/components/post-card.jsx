@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 function getStatusColor(status){
     let statusColor;
     if(status === 'OPEN'){
-        statusColor = "danger";
+        statusColor = "secondary";
     }else if(status === 'ACTIVE'){
         statusColor = "primary";
     }else if(status === 'RESOLVED'){
         statusColor = "success";
+    }else if(status === 'DELETED'){
+        statusColor = "danger";
     }else{
         statusColor = "secondary";
     }

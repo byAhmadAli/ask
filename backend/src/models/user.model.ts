@@ -61,6 +61,8 @@ export class IUserModel {
   email: string;
   @property()
   password: string;
+  @property()
+  nickname: string;
 }
 
 @model()

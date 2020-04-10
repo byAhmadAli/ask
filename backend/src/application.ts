@@ -91,15 +91,13 @@ export class UserApplication extends BootMixin(
       _id = new ObjectId();
       await problemTypeRepository.create({ _id, type: "أشعر بوحدة شديدة" });
       _id = new ObjectId();
-      await problemTypeRepository.create({ _id, type: "لم أتعلم بعد كيفية ترتيب روتيني اليومي" });
-      _id = new ObjectId();
       await problemTypeRepository.create({ _id, type: "أنا قلق على عملي" });
       _id = new ObjectId();
-      await problemTypeRepository.create({ _id, type: "أكره عدم معرفتي ما سيحدث في المستقبل" });
-      _id = new ObjectId();
-      await problemTypeRepository.create({ _id, type: "ليس لدي مساحة كافية في منزلي لأقضي وقت مع نفسي" });
-      _id = new ObjectId();
       await problemTypeRepository.create({ _id, type: "لدي مشاكل عائلية" });
+      _id = new ObjectId();
+      await problemTypeRepository.create({ _id, type: "لم أتعلم بعد كيفية ترتيب روتيني اليومي" });
+      _id = new ObjectId();
+      await problemTypeRepository.create({ _id, type: "غير ذلك" });
     } catch (e) {
       throw e
     }

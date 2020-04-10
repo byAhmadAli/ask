@@ -3,8 +3,8 @@ import { inject } from '@loopback/core';
 import { HttpErrors } from '@loopback/rest';
 import {
   param,
-  del,
-  patch
+  patch,
+  get
 } from '@loopback/openapi-v3';
 
 import {
@@ -25,13 +25,27 @@ export class AdminController {
     private answerRepository: AnswerRepository,
   ) { }
 
+  @get('/admin/problems')
+  @secured(SecuredType.HAS_ANY_ROLE, ['ADMIN'])
+  async getAllProblems(
+    
+  ) {
+    const problems = await this.problemRepository.find();
+
+    return problems.sort((a: any, b: any) => b.createdAt - a.createdAt);
+  }
+
   @patch('/problems/{id}/delete')
   @secured(SecuredType.HAS_ANY_ROLE, ['ADMIN'])
   async deleteProblem(
     @param.path.string('id') id: string
   ) {
     await this.problemRepository.updateById(id, {
-        deleted: true
+        deleted: true,
+        helperId: '',
+        assigned: false,
+        status: "DELETED"
+
     });
 
     await this.answerRepository.updateAll({
@@ -61,7 +75,8 @@ export class AdminController {
     @param.path.string('id') id: string
   ) {
     await this.problemRepository.updateById(id, {
-        deleted: false
+        deleted: false,
+        status: "OPEN"
     });
 
     await this.answerRepository.updateAll({
@@ -79,7 +94,7 @@ export class AdminController {
     @param.path.string('id') id: string
   ) {
     await this.answerRepository.updateById(id, {
-        deleted: false
+        deleted: false,
     });
 
     return 'done';

@@ -50,8 +50,16 @@ export class ProblemUserController {
   ) {
     const findUser = await this.usersRepository.findOne({ where: { email: this.currentUser.id } });
     if (!findUser) throw new HttpErrors.NotFound('User does not exist');
-    const findProblemType = await this.problemTypeRepository.findOne({ where: { _id: problem.type } })
+    
+    let findProblemType;
+    if(problem.type === 'other'){
+      findProblemType = await this.problemTypeRepository.findOne({ where: { type: 'غير ذلك' } })
+    }else{
+      findProblemType = await this.problemTypeRepository.findOne({ where: { _id: problem.type } })
+    }
+
     if (!findProblemType) throw new HttpErrors.UnprocessableEntity('Problem type does not exist');
+    
     try {
 
       problem._id = new ObjectId();
@@ -77,7 +85,7 @@ export class ProblemUserController {
 
     const problems = await this.problemRepository.find({ where: { userId: findUser._id, deleted: false } });
 
-    return problems
+    return problems.sort((a: any, b: any) => b.createdAt - a.createdAt);
   }
 
   @patch('/problem/{id}/resolved')

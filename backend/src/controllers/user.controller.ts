@@ -79,7 +79,8 @@ export class UserController {
       // create the new user
       user._id = new ObjectId();
       user.email = user.email.toLocaleLowerCase()
-      user.nickname = faker.internet.userName().toLocaleLowerCase();
+      user.nickname = user.nickname.toLocaleLowerCase();
+      
       const savedUser = await this.usersRepository.create(user);
       delete savedUser.password;
       let _id = new ObjectId();

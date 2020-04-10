@@ -1,16 +1,94 @@
 import React from 'react';
 
 const Emoji = (props) => {
+    const { group, onChange } = props;
     return (
-        <select {...props} className="form-control">
-            <option value="" disabled selected>?</option>
-            <option role="img">😭</option>
-            <option role="img">😢</option>
-            <option role="img">😐</option>
-            <option role="img">😊</option>
-            <option role="img">😃</option>
-            <option role="img">😡</option>
-        </select>
+        <div className="ask-radio-button-wrapper">	
+            <span>
+                <input 
+                    type="radio" 
+                    className="ask-radio-button" 
+                    name={`${group}-feeling`}
+                    value="😶"
+                    id={`${group}-problem-type-none`}
+                    defaultChecked={true}
+                    onChange={onChange}
+                />
+                <label htmlFor={`${group}-problem-type-none`}>😶</label>
+            </span>
+
+            <span>
+                <input 
+                    type="radio" 
+                    className="ask-radio-button" 
+                    name={`${group}-feeling`}
+                    value="😭"
+                    id={`${group}-problem-type-awful`}
+                    onChange={onChange}
+                />
+                <label htmlFor={`${group}-problem-type-awful`}>😭</label>
+            </span>
+
+            <span>
+                <input 
+                    type="radio" 
+                    className="ask-radio-button" 
+                    name={`${group}-feeling`}
+                    value="😢"
+                    id={`${group}-problem-type-bad`}
+                    onChange={onChange}
+                />
+                <label htmlFor={`${group}-problem-type-bad`}>😢</label>
+            </span>
+
+            <span>
+                <input 
+                    type="radio" 
+                    className="ask-radio-button" 
+                    name={`${group}-feeling`}
+                    value="😐"
+                    id={`${group}-problem-type-okay`}
+                    onChange={onChange}
+                />
+                <label htmlFor={`${group}-problem-type-okay`}>😐</label>
+            </span>
+
+            <span>
+                <input 
+                    type="radio" 
+                    className="ask-radio-button" 
+                    name={`${group}-feeling`} 
+                    value="😊"
+                    id={`${group}-problem-type-good`}
+                    onChange={onChange}
+                />
+                <label htmlFor={`${group}-problem-type-good`}>😊</label>
+            </span>
+
+            <span>
+                <input 
+                    type="radio" 
+                    className="ask-radio-button" 
+                    name={`${group}-feeling`}
+                    value="😃"
+                    id={`${group}-problem-type-great`}
+                    onChange={onChange}
+                />
+                <label htmlFor={`${group}-problem-type-great`}>😃</label>
+            </span>
+
+            <span>
+                <input 
+                    type="radio" 
+                    className="ask-radio-button" 
+                    name={`${group}-feeling`}
+                    value="😠"
+                    id={`${group}-problem-type-angery`}
+                    onChange={onChange}
+                />
+                <label htmlFor={`${group}-problem-type-angery`}>😠</label>
+            </span>
+        </div>
     );
 }
 
