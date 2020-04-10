@@ -53,11 +53,6 @@
         background-color: $primary;
         text-align: center;
         .item{
-            &.active{
-                > a{
-                    background-color: lighten($primary, 7%);
-                }
-            }
             > a {
                 color: $white;
                 width: 100%;
@@ -69,6 +64,9 @@
                     display: none;
                 }
                 &:hover{
+                    background-color: lighten($primary, 7%);
+                }
+                &.active{
                     background-color: lighten($primary, 7%);
                 }
             }

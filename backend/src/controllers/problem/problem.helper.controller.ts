@@ -33,7 +33,7 @@ export class ProblemHelperController {
   @secured(SecuredType.HAS_ANY_ROLE, ['ADMIN', 'HELPER'])
   async getAllProblem(
   ) {
-    const problems = await this.problemRepository.find({ where: { status: "OPEN" } });
+    const problems = await this.problemRepository.find({ where: { status: "OPEN", deleted: false } });
 
     return problems
   }
@@ -45,7 +45,7 @@ export class ProblemHelperController {
     const findUser = await this.usersRepository.findOne({ where: { email: this.currentUser.id } });
     if (!findUser) throw new HttpErrors.NotFound('User does not exist');
 
-    const problems = await this.problemRepository.find({ where: { assigned: true, helperId: findUser._id } });
+    const problems = await this.problemRepository.find({ where: { assigned: true, helperId: findUser._id, deleted: false } });
 
     const activeProblems = problems.filter(item => item.status === 'ACTIVE');
     const resolvedProblems = problems.filter(item => item.status === 'RESOLVED');
@@ -64,7 +64,7 @@ export class ProblemHelperController {
     const findUser = await this.usersRepository.findOne({ where: { email: this.currentUser.id } });
     if (!findUser) throw new HttpErrors.NotFound('User does not exist');
 
-    const problem = await this.problemRepository.findOne({ where: { _id: id } });
+    const problem = await this.problemRepository.findOne({ where: { _id: id, deleted: false } });
     if (!problem) throw new HttpErrors.NotFound('problem does not exist');
 
     try {

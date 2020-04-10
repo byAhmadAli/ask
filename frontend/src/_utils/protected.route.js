@@ -4,6 +4,7 @@ import auth from "../_services/Auth";
 
 export const ProtectedRoute = ({
   component: Component,
+  profile,
   ...rest
 }) => {
   return (
@@ -11,7 +12,7 @@ export const ProtectedRoute = ({
       {...rest}
       render={props => {
         if (auth.isAuthenticated()) {
-          return <Component {...props} />;
+          return <Component {...props} profile={profile} />;
         } else {
           return (
             <Redirect

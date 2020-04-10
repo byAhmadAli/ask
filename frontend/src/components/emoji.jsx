@@ -3,87 +3,13 @@ import React from 'react';
 const Emoji = (props) => {
     return (
         <select {...props} className="form-control">
-            <option>&#128513;</option>
-            <option>&#128514;</option>
-            <option>&#128515;</option>
-            <option>&#128516;</option>
-            <option>&#128517;</option>
-            <option>&#128518;</option>
-            <option>&#128519;</option>
-            <option>&#128520;</option>
-            <option>&#128521;</option>
-            <option>&#128522;</option>
-            <option>&#128523;</option>
-            <option>&#128524;</option>
-            <option>&#128525;</option>
-            <option>&#128526;</option>
-            <option>&#128527;</option>
-            <option>&#128528;</option>
-            <option>&#128529;</option>
-            <option>&#128530;</option>
-            <option>&#128531;</option>
-            <option>&#128532;</option>
-            <option>&#128533;</option>
-            <option>&#128534;</option>
-            <option>&#128535;</option>
-            <option>&#128536;</option>
-            <option>&#128537;</option>
-            <option>&#128538;</option>
-            <option>&#128539;</option>
-            <option>&#128540;</option>
-            <option>&#128541;</option>
-            <option>&#128542;</option>
-            <option>&#128543;</option>
-            <option>&#128544;</option>
-            <option>&#128545;</option>
-            <option>&#128546;</option>
-            <option>&#128547;</option>
-            <option>&#128548;</option>
-            <option>&#128549;</option>
-            <option>&#128550;</option>
-            <option>&#128551;</option>
-            <option>&#128552;</option>
-            <option>&#128553;</option>
-            <option>&#128554;</option>
-            <option>&#128555;</option>
-            <option>&#128556;</option>
-            <option>&#128557;</option>
-            <option>&#128558;</option>
-            <option>&#128559;</option>
-            <option>&#128560;</option>
-            <option>&#128561;</option>
-            <option>&#128562;</option>
-            <option>&#128563;</option>
-            <option>&#128564;</option>
-            <option>&#128565;</option>
-            <option>&#128566;</option>
-            <option>&#128567;</option>
-            <option>&#128577;</option>
-            <option>&#128578;</option>
-            <option>&#128579;</option>
-            <option>&#128580;</option>
-            <option>&#129296;</option>
-            <option>&#129297;</option>
-            <option>&#129298;</option>
-            <option>&#129299;</option>
-            <option>&#129300;</option>
-            <option>&#129301;</option>
-            <option>&#129312;</option>
-            <option>&#129313;</option>
-            <option>&#129314;</option>
-            <option>&#129315;</option>
-            <option>&#129316;</option>
-            <option>&#129317;</option>
-            <option>&#129319;</option>
-            <option>&#129320;</option>
-            <option>&#129321;</option>
-            <option>&#129322;</option>
-            <option>&#129323;</option>
-            <option>&#129324;</option>
-            <option>&#129325;</option>
-            <option>&#129326;</option>
-            <option>&#129327;</option>
-            <option>&#129488;</option>
+            <option value="" disabled selected>?</option>
+            <option role="img">😭</option>
+            <option role="img">😢</option>
+            <option role="img">😐</option>
+            <option role="img">😊</option>
+            <option role="img">😃</option>
+            <option role="img">😡</option>
         </select>
     );
 }

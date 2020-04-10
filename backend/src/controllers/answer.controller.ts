@@ -57,7 +57,7 @@ export class AnswerController {
     const roles = await this.userRoleRepository.find({ where: { userId: findUser._id } });
     const getUserRole = roles.map((r: any) => r.userType);
 
-    const problem = await this.problemRepository.findOne({ where: { _id: id } });
+    const problem = await this.problemRepository.findOne({ where: { _id: id, deleted: false } });
     if (!problem) throw new HttpErrors.NotFound('problem does not exist');
 
     if (problem.assigned && getUserRole.includes('USER') && problem.userId != findUser._id) {
@@ -95,7 +95,7 @@ export class AnswerController {
     const roles = await this.userRoleRepository.find({ where: { userId: findUser._id } });
     const getUserRole = roles.map((r: any) => r.userType);
 
-    const problem = await this.problemRepository.findOne({ where: { _id: id } });
+    const problem = await this.problemRepository.findOne({ where: { _id: id, deleted: false } });
     if (!problem) throw new HttpErrors.NotFound('problem does not exist');
 
     if (problem.assigned && getUserRole.includes('USER') && problem.userId != findUser._id) {
@@ -104,7 +104,7 @@ export class AnswerController {
       throw new HttpErrors.Unauthorized('You are not authorized!');
     }
 
-    const getAnswers = await this.answerRepository.find({ where: { problemId: id } });
+    const getAnswers = await this.answerRepository.find({ where: { problemId: id, deleted: false } });
     let formated = getAnswers.map(item => {
       let owner = (problem.userId === findUser._id);
       let me = (item.userId === findUser._id);

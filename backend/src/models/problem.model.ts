@@ -38,6 +38,13 @@ export class Problem extends Entity {
     required: false,
     default: false
   })
+  deleted: boolean;
+
+  @property({
+    type: 'boolean',
+    required: false,
+    default: false
+  })
   assigned?: boolean;
 
   @property({

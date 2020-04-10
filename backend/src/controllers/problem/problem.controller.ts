@@ -45,7 +45,7 @@ export class ProblemController {
     const roles = await this.userRoleRepository.find({ where: { userId: findUser._id } });
     const getUserRole = roles.map((r: any) => r.userType);
 
-    const problem: any = await this.problemRepository.findOne({ where: { _id: id } });
+    const problem: any = await this.problemRepository.findOne({ where: { _id: id, deleted: false } });
     if (!problem) throw new HttpErrors.NotFound('problem does not exist');
 
     if (problem.assigned && getUserRole.includes('USER') && problem.userId != findUser._id) {

@@ -28,6 +28,13 @@ export class Answer extends Entity {
   feeling: string;
 
   @property({
+    type: 'boolean',
+    required: false,
+    default: false
+  })
+  deleted: boolean;
+
+  @property({
     type: 'date',
     default: () => new Date(),
   })

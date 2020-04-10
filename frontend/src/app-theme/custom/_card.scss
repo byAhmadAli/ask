@@ -1,15 +1,81 @@
 .card{
     margin-bottom: 30px;
     position: relative;
-    h5{
-        margin: 15px 0;
+    .card-body{
+        .cover-card{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .post-head{
+            margin-bottom: 15px;
+            .badge{
+                margin-bottom: 7px;
+            }
+        }
+        .feeling{
+            background-color: #f5f6fa;
+            float: right;
+            margin-left: 15px;
+            font-size: 30px;
+            padding: 10px;
+            border-radius: 50%;
+        }
+        .description{
+            float: right;
+            h5{
+                margin: 0;
+                margin-bottom: 10px;
+            }
+        }
     }
-    a{
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
+    &.status{
+        .form-group{
+            margin: 0;
+        }
+        .feeling{
+            width: 86px;
+            height: 86px;
+            position: relative;
+            background-color: #f5f6fa;
+            float: right;
+            margin-left: 15px;
+            font-size: 30px;
+            padding: 10px;
+            border-radius: 50%;
+            z-index: 5;
+            margin-top: 10px;
+            margin-right: 15px;
+            select{
+                border: none;
+                background-color: transparent;
+                font-size: 30px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                margin: auto;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                text-align-last: center;
+                padding-bottom: 5px;
+                -moz-appearance: none; 
+                -moz-appearance: none; 
+                -webkit-appearance: none; 
+                appearance: none;
+            }
+        }
+        textarea{
+            position: absolute;
+            padding: 20px;
+            padding-right: 115px;
+            resize: none;
+            border: none;
+        }
     }
 }
 
@@ -21,22 +87,6 @@
         margin-top: -1px;
         .card-body{
             padding: 10px;
-
-            .feeling{
-                background-color: #f5f6fa;
-                float: right;
-                margin-left: 10px;
-                font-size: 30px;
-                padding: 10px;
-                border-radius: 50%;
-            }
-            .description{
-                float: right;
-                h5{
-                    margin: 0;
-                    margin-bottom: 10px;
-                }
-            }
         }
     }
 }

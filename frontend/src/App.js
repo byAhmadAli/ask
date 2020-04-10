@@ -3,13 +3,11 @@ import './App.css';
 import LoginLayout from './layouts/login/Login';
 import signupLayout from './layouts/signup/Signup';
 import ProblemLayout from './layouts/problem/Problem';
-import Problems from './layouts/user/Problems';
 import { createBrowserHistory } from "history";
-import { Router, Route, Switch, Redirect, Link } from "react-router-dom";
+import { Router, Route, Switch, Link } from "react-router-dom";
 import { ProtectedRoute } from "./_utils/protected.route";
-import Problem from './layouts/user/Problem';
-import Create from './layouts/user/Create';
-import Assigned from './layouts/user/assigned';
+import AppLayout from './layouts/app/AppLayout';
+
 const hist = createBrowserHistory();
 
 function App() {
@@ -20,11 +18,7 @@ function App() {
           <Route exact path="/" component={ProblemLayout} />
           <Route exact path="/login" component={LoginLayout} />
           <Route exact path="/signup" component={signupLayout} />
-          <ProtectedRoute exact path="/app/create" component={Create} />
-          <ProtectedRoute exact path="/app/problems" component={Problems} />
-          <ProtectedRoute exact path="/app/problems/:id" component={Problem} />
-          <ProtectedRoute exact path="/app/assigned" component={Assigned} />
-          <Redirect exact from="/app" to="/app/problems" />
+          <ProtectedRoute path="/app" component={AppLayout} />
           <Route path="*" component={() => {
             return(
               <div className="text-center">
