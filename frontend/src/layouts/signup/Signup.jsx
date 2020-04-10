@@ -44,9 +44,9 @@ class Signup extends Component{
             data,
             () => {
                 if(this.props.location.state){
-                    let { feeling, description, type } = this.props.location.state;
+                    let { statusFeeling, description, type } = this.props.location.state;
                     let data = {
-                        feeling,
+                        feeling: statusFeeling,
                         description,
                         type
                     }
