@@ -12,7 +12,7 @@ class Problem extends Component{
             answers: [],
             loading: true,
             loadingAnswers: true,
-            feeling: "😂",
+            feeling: "😶",
             description: ""
         }
     }
@@ -67,9 +67,9 @@ class Problem extends Component{
     createAnswer(e){
         const { id } = this.props.match.params;
         e.preventDefault();
-        let { feeling, description } = this.state;
+        let { statusFeeling, description } = this.state;
         let data = {
-            feeling,
+            feeling: statusFeeling,
             description
         }
 
@@ -77,7 +77,7 @@ class Problem extends Component{
         .then(res => {
             this.getAnswers();
             this.setState({
-                feeling: "😂",
+                statusFeeling: "😶",
                 description: ""
             }, () => {
                 document.getElementById("comment").reset();
@@ -134,7 +134,7 @@ class Problem extends Component{
     }
 
     render(){
-        const { problem, loading, loadingAnswers, answers, description } = this.state;
+        const { problem, loading, loadingAnswers, answers, feeling, description } = this.state;
         const { profile } = this.props;
         
         return(
