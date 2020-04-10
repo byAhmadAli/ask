@@ -67,9 +67,9 @@ class Problem extends Component{
     createAnswer(e){
         const { id } = this.props.match.params;
         e.preventDefault();
-        let { statusFeeling, description } = this.state;
+        let { feeling, description } = this.state;
         let data = {
-            feeling: statusFeeling,
+            feeling,
             description
         }
 
@@ -77,7 +77,7 @@ class Problem extends Component{
         .then(res => {
             this.getAnswers();
             this.setState({
-                statusFeeling: "😶",
+                feeling: "😶",
                 description: ""
             }, () => {
                 document.getElementById("comment").reset();
