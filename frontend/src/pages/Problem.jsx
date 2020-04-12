@@ -43,7 +43,6 @@ class Problem extends Component{
         })
         .catch((error) => {
             console.log(error);
-            debugger
             if(error.request.status === 404) return window.location.pathname = '/app'
         });
     }
