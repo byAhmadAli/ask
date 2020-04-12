@@ -16,8 +16,12 @@ import {
 import {
   secured,
   SecuredType,
-  TokenServiceBindings
+  TokenServiceBindings,
+  UserServiceBindings,
+  Credentials
 } from '../../services';
+import { UserService } from '@loopback/authentication';
+import { Users } from '../../models';
 
 export class ProblemController {
   constructor(
@@ -30,10 +34,38 @@ export class ProblemController {
     @repository(ProblemTypeRepository)
     private problemTypeRepository: ProblemTypeRepository,
 
+    @inject(UserServiceBindings.USER_SERVICE)
+    public userService: UserService<Users, Credentials>,
+
     @inject(TokenServiceBindings.CURRENT_USER, { optional: true })
     private currentUser: any,
   ) { }
+  
+  @get('/problems')
+  @secured(SecuredType.IS_AUTHENTICATED)
+  async getMyProblem(
+    @param.query.string('status')
+    status: string
+  ) {
+    
+    const findUser = await this.usersRepository.findOne({ where: { email: this.currentUser.id } });
+    if (!findUser) throw new HttpErrors.NotFound('User does not exist');
 
+    const roles = await this.userRoleRepository.find({ where: { userId: findUser._id } });
+    const getUserRole = roles.map((r: any) => r.userType);
+
+    let problems:any = [];
+    if(getUserRole.includes('USER')){
+      problems = await this.problemRepository.find({ where: { userId: findUser._id, status, deleted: false } });
+    } else if(getUserRole.includes('HELPER')){
+      problems = await this.problemRepository.find({ where: { status, deleted: false } });
+    } else if(getUserRole.includes('ADMIN')){
+      problems = await this.problemRepository.find({ where: { status, deleted: false } });
+    }
+
+    return problems.sort((a: any, b: any) => b.createdAt - a.createdAt);
+  }
+  
   @get('/problems/{id}')
   @secured(SecuredType.IS_AUTHENTICATED)
   async getProblem(
@@ -56,12 +88,24 @@ export class ProblemController {
 
     problem.user = (problem.userId === findUser._id);
     problem.helper = (problem.helperId === findUser._id);
+    
+    if(getUserRole.includes('ADMIN')){
+      const creator = await this.usersRepository.findOne({ where: { _id: problem.userId } });
+      if (!creator) throw new HttpErrors.NotFound('User does not exist');
+      const creatorProfile = await this.userService.convertToUserProfile(creator);
 
-    return problem
+      const helper = await this.usersRepository.findOne({ where: { _id: problem.helperId } });
+      if (!helper) throw new HttpErrors.NotFound('User does not exist');
+      const helperProfile = await this.userService.convertToUserProfile(helper);
+
+      return {problem, creatorProfile, helperProfile};
+    }
+
+    return problem;
   }
+
   @get('/problem/types')
   async getAllProblemTypes(
-
   ) {
     const problemTypes = await this.problemTypeRepository.find();
     return problemTypes;

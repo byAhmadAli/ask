@@ -29,31 +29,18 @@ export class ProblemHelperController {
     private currentUser: any,
   ) { }
 
-  @get('/problems')
-  @secured(SecuredType.HAS_ANY_ROLE, ['ADMIN', 'HELPER'])
-  async getAllProblem(
-  ) {
-    const problems = await this.problemRepository.find({ where: { status: "OPEN", deleted: false } });
-
-    return problems.sort((a: any, b: any) => b.createdAt - a.createdAt);
-  }
-
-  @get('/problems/assigned/me')
+  @get('/problems/assigned')
   @secured(SecuredType.HAS_ANY_ROLE, ['ADMIN', 'HELPER'])
   async getMyAssigned(
+    @param.query.string('status')
+    status: string
   ) {
     const findUser = await this.usersRepository.findOne({ where: { email: this.currentUser.id } });
     if (!findUser) throw new HttpErrors.NotFound('User does not exist');
 
-    const problems = await this.problemRepository.find({ where: { assigned: true, helperId: findUser._id, deleted: false } });
+    const problems = await this.problemRepository.find({ where: { assigned: true, status, helperId: findUser._id, deleted: false } });
 
-    const activeProblems = problems.filter(item => item.status === 'ACTIVE');
-    const resolvedProblems = problems.filter(item => item.status === 'RESOLVED');
-
-    return {
-      active_problems: activeProblems.sort((a: any, b: any) => b.createdAt - a.createdAt),
-      resolved_problems: resolvedProblems.sort((a: any, b: any) => b.createdAt - a.createdAt)
-    }
+    return problems.sort((a: any, b: any) => b.createdAt - a.createdAt);
   }
 
   @patch('/problems/{id}/assign')

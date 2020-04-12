@@ -3,6 +3,7 @@ import auth from '../../_services/Auth';
 import { Route, Link, Switch, Redirect } from "react-router-dom";
 import Login from '../login/Login';
 import Signup from '../signup/Signup';
+import logoImg from './logo.svg';
 
 class AuthLayout extends Component{
     constructor(props){
@@ -18,8 +19,10 @@ class AuthLayout extends Component{
         return(
             <div className="auth-layout">
                 <div className="auth-content">
-                    <h1 className="mb-3 font-weight-normal">
-                        <Link to="/">فضفض</Link>
+                    <h1 className="mb-3 font-weight-normal logo">
+                        <Link to="/">
+                            <img src={logoImg} alt="Fadfed logo" />
+                        </Link>
                     </h1>
                     <div>
                         <Switch>
@@ -28,7 +31,7 @@ class AuthLayout extends Component{
                             <Redirect exact from="/auth" to="/auth/signup" />
                         </Switch>
                     </div>
-                    <p className="mt-5 mb-3 text-muted">© 2020 فضفض</p>
+                    <p className="mb-0 text-muted">© 2020 فضفض</p>
                 </div>
                 {this.isAuthenticated()}
             </div>

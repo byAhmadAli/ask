@@ -5,6 +5,10 @@ import Loading from './loading';
 import client from '../_utils/Client';
 import auth from '../_services/Auth';
 
+import {
+    Card, CardBody, Row
+} from 'reactstrap';
+
 class StatusCard extends Component {
     constructor(props){
         super(props);
@@ -13,7 +17,8 @@ class StatusCard extends Component {
             loading: true,
             feeling: "😶",
             description: "",
-            type: "other"
+            type: "other",
+            error: ""
         }
     }
 
@@ -47,40 +52,47 @@ class StatusCard extends Component {
             type
         }
 
-        client.post(`${process.env.REACT_APP_API_URL}/create/problem`, data)
+        client.post(`${process.env.REACT_APP_API_URL}/problems/create`, data)
         .then(res => {
-            this.props.history.push(`/app/problems/${res.data.problem_id}`);
+            this.props.history.push(`/app/problems/show/${res.data.problem_id}`);
         })
         .catch((error) => {
             console.log(error);
+            this.setState({
+                error: error.response.data.error.message
+            });
         });
     }
     
     render(){
-        const { problemTypes, loading, feeling, description, type } = this.state;
+        const { problemTypes, loading, feeling, description, type, error } = this.state;
         
         return (
             <div>
-                <div className="card status">
-                    <div className="form-group">
-                        <textarea 
-                            onChange={this.onChange.bind(this)}
-                            name="description"
-                            defaultValue={description}
-                            className="form-control" id="inputDes" rows="3" placeholder="عبّر عن شعورك اليوم؟"
-                        ></textarea>
-                        <div className="feeling">
+                {error && 
+                    <div className="alert alert-danger" role="alert">{error}</div>
+                }
+                <Card className="status">
+                    <CardBody>
+                        <div className="form-group">
+                            <textarea 
+                                id="description"
+                                onChange={this.onChange.bind(this)}
+                                name="description"
+                                defaultValue={description}
+                                className="form-control" id="inputDes" rows="3" placeholder="عبّر عن شعورك اليوم؟"
+                            ></textarea>
+                        </div>
+                        <div className="select-feeling">
                             <Emoji 
                                 group="status"
                                 onChange={this.onChange.bind(this)} />
                         </div>
-                    </div>
-                    <div className="col-md-12">
                         <hr />
                         {loading ? (
-                            <div className="row mb-3">
+                            <Row className="mb-3">
                                 <Loading color="primary" status="wait" />
-                            </div>
+                            </Row>
                         ) : (
                             <div>
                                 <div className="ask-radio-button-wrapper">
@@ -114,8 +126,8 @@ class StatusCard extends Component {
                                 )}
                             </div>
                         )}
-                    </div>
-                </div>
+                    </CardBody>
+                </Card>
                 {!auth.isAuthenticated() && 
                     <p>لديك حساب؟ <Link to='/auth/login'>تسجيل دخول</Link></p>
                 }

@@ -41,7 +41,7 @@ export class ProblemUserController {
     private currentUser: any,
   ) { }
 
-  @post('/create/problem')
+  @post('/problems/create')
   @secured(SecuredType.HAS_ANY_ROLE, ['ADMIN', 'USER'])
   async createProblem(
     @requestBody({
@@ -76,19 +76,7 @@ export class ProblemUserController {
     }
   }
 
-  @get('/problems/me')
-  @secured(SecuredType.HAS_ANY_ROLE, ['ADMIN', 'USER'])
-  async getMyProblem(
-  ) {
-    const findUser = await this.usersRepository.findOne({ where: { email: this.currentUser.id } });
-    if (!findUser) throw new HttpErrors.NotFound('User does not exist');
-
-    const problems = await this.problemRepository.find({ where: { userId: findUser._id, deleted: false } });
-
-    return problems.sort((a: any, b: any) => b.createdAt - a.createdAt);
-  }
-
-  @patch('/problem/{id}/resolved')
+  @patch('/problems/{id}/resolved')
   @secured(SecuredType.HAS_ANY_ROLE, ['ADMIN', 'USER'])
   async resolvedProblem(
     @param.path.string('id') id: string,

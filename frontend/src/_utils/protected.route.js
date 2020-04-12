@@ -11,6 +11,7 @@ export const ProtectedRoute = ({
     <Route
       {...rest}
       render={props => {
+        
         if (auth.isAuthenticated()) {
           return <Component {...props} profile={profile} />;
         } else {

@@ -25,7 +25,7 @@ const PostCard = (props) => {
         <div className="card">
             <div className="card-body">
                 {withLink && 
-                    <Link className="cover-card" to={`/app/problems/${item._id}`} />
+                    <Link className="cover-card" to={`/app/problems/show/${item._id}`} />
                 }
                 <div className="post-head clearfix">
                     <div className="feeling">

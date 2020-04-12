@@ -24,16 +24,26 @@ class Problem extends Component{
 
     getProblem(){
         const { id } = this.props.match.params;
+        const { profile } = this.props;
         client.get(`${process.env.REACT_APP_API_URL}/problems/${id}`)
         .then(res => {
-            this.setState({
-                problem: res.data,
-                loading: false
-            })
+            if(profile && profile.role.includes('ADMIN')){
+                this.setState({
+                    problem: res.data.problem,
+                    user_profile: res.data.creatorProfile,
+                    helper_profile: res.data.helperProfile,
+                    loading: false
+                })
+            }else{
+                this.setState({
+                    problem: res.data,
+                    loading: false
+                })
+            }  
         })
         .catch((error) => {
             console.log(error);
-            
+            debugger
             if(error.request.status === 404) return window.location.pathname = '/app'
         });
     }
@@ -102,7 +112,7 @@ class Problem extends Component{
 
     resolve(){
         const { id } = this.props.match.params;
-        client.patch(`${process.env.REACT_APP_API_URL}/problem/${id}/resolved`)
+        client.patch(`${process.env.REACT_APP_API_URL}/problems/${id}/resolved`)
         .then(res => {
             this.getProblem();
             this.getAnswers();
@@ -134,7 +144,7 @@ class Problem extends Component{
     }
 
     render(){
-        const { problem, loading, loadingAnswers, answers, feeling, description } = this.state;
+        const { problem, loading, loadingAnswers, answers, description } = this.state;
         const { profile } = this.props;
         
         return(
@@ -147,7 +157,7 @@ class Problem extends Component{
                     </div>
                 </div>
                 <div className="container">
-                    <div>
+                    <div className="post-layout">
                         {loading ? (
                             <div className="row">
                                 <Loading color="primary" status="wait" />
@@ -236,20 +246,20 @@ class Problem extends Component{
                                         <div className="col-md-12">
                                             <div className="card status">
                                                 <form id="comment">
-                                                    <div className="form-group">
-                                                        <textarea 
-                                                            onChange={this.onChange.bind(this)}
-                                                            name="description"
-                                                            defaultValue={description}
-                                                            className="form-control" id="inputDes" rows="3" placeholder="اكتب تعليقاً..."
-                                                        ></textarea>
-                                                        <div className="feeling">
-                                                            <Emoji 
-                                                                group="status"
-                                                                onChange={this.onChange.bind(this)} />
-                                                        </div>
-                                                    </div>
                                                     <div className="card-body">
+                                                        <div className="form-group">
+                                                            <textarea 
+                                                                onChange={this.onChange.bind(this)}
+                                                                name="description"
+                                                                defaultValue={description}
+                                                                className="form-control" id="inputDes" rows="3" placeholder="اكتب تعليقاً..."
+                                                            ></textarea>
+                                                            <div className="select-feeling">
+                                                                <Emoji 
+                                                                    group="status"
+                                                                    onChange={this.onChange.bind(this)} />
+                                                            </div>
+                                                        </div>
                                                         <hr />
                                                         <button 
                                                             onClick={this.createAnswer.bind(this)}

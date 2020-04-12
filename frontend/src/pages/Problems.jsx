@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import client from '../_utils/Client';
 import Loading from '../components/loading';
 import { Link } from 'react-router-dom';
-import MainMenu from '../components/main-menu';
 import NoContent from '../components/no-content';
 import PostCard from '../components/post-card';
 import StatusCard from '../components/status-card';
-import Emoji from '../components/emoji';
+import Qoutes from '../components/qoutes';
+
 class Problems extends Component{
     constructor(props){
         super(props);
@@ -18,12 +18,9 @@ class Problems extends Component{
     }
 
     componentDidMount(){
-        let problemUrl = this.props.profile && this.props.profile.role.includes('USER') ? '/problems/me' : 'problems';
-        if(this.props.profile && this.props.profile.role.includes('ADMIN')){
-            problemUrl = '/admin/problems'
-        }
-        
-        client.get(`${process.env.REACT_APP_API_URL}/${problemUrl}`)
+        const { profile } = this.props;
+        const baseUrl = (profile && profile.role.includes('ADMIN')) ? 'problems' : 'problems?status=OPEN'
+        client.get(`${process.env.REACT_APP_API_URL}/${baseUrl}`)
         .then(res => {
             this.setState({
                 problems: res.data,
@@ -52,7 +49,7 @@ class Problems extends Component{
                 </div>
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-12">
+                        <div className="col-lg-8">
                             {profile && profile.role.includes('USER') && 
                                 <StatusCard history={history} />
                             }
@@ -78,10 +75,13 @@ class Problems extends Component{
                                     <Link className="btn btn-md btn-primary mb-3" to="/app/create">انشاء جديد</Link>}/>
                             ))}
                         </div>
+                        
+                        <div className="col-lg-4">
+                            <Qoutes />
+                        </div>
                     </div>
                 </div>
             </div>
-            
         )
     }
 }

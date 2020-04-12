@@ -73,7 +73,10 @@
         }
         
     }
-
+    .post-layout{
+        margin: auto;
+        max-width: percentage((8 / $grid-columns));
+    }
     .no-content{
         svg{
             font-size: 100px;
@@ -82,7 +85,12 @@
     }
 }
 
-@include media-breakpoint-between(xs, sm) {
+
+@include media-breakpoint-between(xs, md) {
+    .post-layout{
+        margin: auto;
+        max-width: 100%!important;
+    }
     .content{
         padding-right: 0 !important;
         .head{
@@ -93,12 +101,19 @@
         bottom: 0;
         width: 100%!important;
         height: 60px!important;
+        display: flex;
+        flex-direction: row;
         .item{
-            display: inline-block;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             > a {
-                width: 85px!important;
                 height: 60px!important;
             }
         }
+    }
+    .make-me-sticky{
+        display: none;
     }
 }

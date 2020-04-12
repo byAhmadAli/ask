@@ -70,8 +70,11 @@ export class UserController {
 
     validateCredentials(_.pick(user, ['email', 'password']));
 
-    const findUser = await this.usersRepository.findOne({ where: { email: user.email } });
+    let findUser = await this.usersRepository.findOne({ where: { email: user.email } });
     if (findUser) throw new HttpErrors.UnprocessableEntity('Email is already taken');
+
+    findUser = await this.usersRepository.findOne({ where: { nickname: user.nickname } });
+    if (findUser) throw new HttpErrors.UnprocessableEntity('Nickname is already taken');
 
     user.password = await this.passwordHasher.hashPassword(user.password);
 
@@ -219,6 +222,24 @@ export class UserController {
       token,
       user: userProfile
     };
+  }
+
+  @get('/users/nickname')
+  async nickname(
+  ): Promise<object> {
+    let nickname = faker.internet.userName().toLocaleLowerCase();
+    let checkNickname = false;
+
+    while (!checkNickname) {
+      let findUser = await this.usersRepository.findOne({ where: { nickname: nickname } });
+      if (!findUser) {
+        checkNickname = true;
+        break;
+      }
+      nickname = faker.internet.userName().toLocaleLowerCase();
+    }
+
+    return {nickname: nickname};
   }
 
   @get('/users/profile')

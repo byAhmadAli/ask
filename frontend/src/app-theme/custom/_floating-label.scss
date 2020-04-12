@@ -15,11 +15,18 @@
         letter-spacing: normal;
         z-index: -1;
         color: $primary;
+        font-weight: bold;
     }
-    input, textarea{
+    input{
         text-align: right;
+        background-color: lighten($secondary, 30%);
         height: 55px;
-        background-color: lighten($secondary, 25%);
+        &:disabled{
+            color: $secondary;
+            & + label{
+                color: $secondary;
+            }
+        }
         &:not(:placeholder-shown) {
             padding: 30px 10px 10px;
             font-size: 14px;
