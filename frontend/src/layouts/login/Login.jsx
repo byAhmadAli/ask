@@ -51,7 +51,7 @@ class Login extends Component{
 
                 client.post(`${process.env.REACT_APP_API_URL}/problems/create`, data)
                 .then(res => {
-                    window.location.pathname = `/app/problems/${res.data.problem_id}`;
+                    window.location.pathname = `/app/problems/show/${res.data.problem_id}`;
                 })
                 .catch((error) => {
                     console.log(error);
