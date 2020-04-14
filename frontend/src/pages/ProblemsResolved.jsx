@@ -65,8 +65,7 @@ class ProblemsResolved extends Component{
                                         })}
                                     </div>
                                 :(
-                                    <NoContent component={
-                                        <Link className="btn btn-md btn-primary mb-3" to="/app/create">انشاء جديد</Link>}/>
+                                    <NoContent />
                                 ))}
                             </div>
                         </div>

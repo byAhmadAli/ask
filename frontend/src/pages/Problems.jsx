@@ -19,7 +19,7 @@ class Problems extends Component{
 
     componentDidMount(){
         const { profile } = this.props;
-        const baseUrl = (profile && profile.role.includes('ADMIN')) ? 'problems' : 'problems?status=OPEN'
+        const baseUrl = (profile && profile.role.includes('ADMIN')) ? 'admin/problems' : 'problems?status=OPEN'
         client.get(`${process.env.REACT_APP_API_URL}/${baseUrl}`)
         .then(res => {
             this.setState({
@@ -64,15 +64,14 @@ class Problems extends Component{
                                         return(
                                             <div key={i} className="row">
                                                 <div className="col-md-12">
-                                                    <PostCard item={item} withLink={true} />
+                                                    <PostCard item={item} withLink={true} profile={profile} />
                                                 </div>
                                             </div>
                                         )
                                     })}
                                 </div>
                             :(
-                                <NoContent component={
-                                    <Link className="btn btn-md btn-primary mb-3" to="/app/create">انشاء جديد</Link>}/>
+                                <NoContent />
                             ))}
                         </div>
                         

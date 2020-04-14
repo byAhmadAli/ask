@@ -41,7 +41,25 @@ class Login extends Component{
             client.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
             localStorage.setItem('token', res.data.token);
             
-            window.location.pathname = '/app';
+            if(this.props.location.state){
+                let { feeling, description, type } = this.props.location.state;
+                let data = {
+                    feeling,
+                    description,
+                    type
+                }
+
+                client.post(`${process.env.REACT_APP_API_URL}/problems/create`, data)
+                .then(res => {
+                    window.location.pathname = `/app/problems/${res.data.problem_id}`;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    window.location.pathname = `/app`;
+                });
+            }else{
+                window.location.pathname = `/app`;
+            }
         })
         .catch((error) => {
             localStorage.removeItem('token') 

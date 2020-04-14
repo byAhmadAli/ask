@@ -9,7 +9,6 @@ const NoContent = (props) => {
                 <path fill-rule="evenodd" d="M13 12.5a.5.5 0 01.5-.5h2a.5.5 0 010 1H14v1.5a.5.5 0 01-1 0v-2z" clip-rule="evenodd"/>
             </svg>
             <p>لا يوجد محتوى</p>
-            {props.component}
         </div>
     );
 }

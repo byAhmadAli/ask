@@ -19,7 +19,7 @@ function getStatusColor(status){
 }
 
 const PostCard = (props) => {
-    const { item, withLink } = props;
+    const { item, withLink, profile } = props;
     
     return (
         <div className="card">
@@ -38,6 +38,12 @@ const PostCard = (props) => {
                 </div>
                 <hr />
                 <p className="card-text">{item.description}</p>
+                {profile && profile.role.includes('ADMIN') &&
+                <>
+                    <hr />
+                    <span>بواسطة: {item.creatorProfile.name}</span>
+                </>
+                }
             </div>
         </div>
     );

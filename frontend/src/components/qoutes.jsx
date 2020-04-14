@@ -71,11 +71,9 @@ const Qoutes = () => {
     const { qoute, name } = random();
     
     return (
-        <div className="card status make-me-sticky">
-            <div className="card-body">
-                <h3>{qoute}</h3>
-                <p>{name}</p>
-            </div>
+        <div className="qoute make-me-sticky">
+            <h3>{qoute}</h3>
+            <p>@{name}</p>
         </div>
     );
 }

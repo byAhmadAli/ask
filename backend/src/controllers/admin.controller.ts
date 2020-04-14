@@ -8,21 +8,32 @@ import {
 } from '@loopback/openapi-v3';
 
 import {
+  UsersRepository,
   ProblemRepository,
   AnswerRepository
 } from '../repositories';
 
 import {
+  UserServiceBindings,
   secured,
-  SecuredType
+  SecuredType,
+  Credentials
 } from '../services';
+
+import { UserService } from '@loopback/authentication';
+import { Users } from '../models';
 
 export class AdminController {
   constructor(
+    @repository(UsersRepository)
+    private usersRepository: UsersRepository,
     @repository(ProblemRepository)
     private problemRepository: ProblemRepository,
     @repository(AnswerRepository)
     private answerRepository: AnswerRepository,
+
+    @inject(UserServiceBindings.USER_SERVICE)
+    public userService: UserService<Users, Credentials>,
   ) { }
 
   @get('/admin/problems')
@@ -32,7 +43,20 @@ export class AdminController {
   ) {
     const problems = await this.problemRepository.find();
 
-    return problems.sort((a: any, b: any) => b.createdAt - a.createdAt);
+    let formated =  await problems.map(async (item) => {
+      let creator = await this.usersRepository.findOne({ where: { _id: item.userId } });
+      if (!creator) throw new HttpErrors.NotFound('User does not exist');
+      let creatorProfile = await this.userService.convertToUserProfile(creator);
+
+      return { 
+        creatorProfile,
+        ...item
+      }
+    })
+
+    return Promise.all(formated).then((completed) => {
+      return completed.sort((a: any, b: any) => b.createdAt - a.createdAt);
+    });
   }
 
   @patch('/problems/{id}/delete')

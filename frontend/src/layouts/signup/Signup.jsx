@@ -63,7 +63,7 @@ class Signup extends Component{
                     type
                 }
 
-                client.post(`${process.env.REACT_APP_API_URL}/create/problem`, data)
+                client.post(`${process.env.REACT_APP_API_URL}/problems/create`, data)
                 .then(res => {
                     window.location.pathname = `/app/problems/${res.data.problem_id}`;
                 })
