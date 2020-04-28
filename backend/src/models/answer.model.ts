@@ -30,6 +30,20 @@ export class Answer extends Entity {
   @property({
     type: 'boolean',
     required: false,
+    default: true
+  })
+  unReadUser: boolean;
+
+  @property({
+    type: 'boolean',
+    required: false,
+    default: true
+  })
+  unReadHelper: boolean;
+
+  @property({
+    type: 'boolean',
+    required: false,
     default: false
   })
   deleted: boolean;

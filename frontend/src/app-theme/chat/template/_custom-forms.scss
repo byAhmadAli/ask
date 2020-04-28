@@ -1,0 +1,13 @@
+// switches
+//
+// Tweak a few things for switches
+
+.custom-switch {
+
+    .custom-control-label {
+        &::after {
+            background-color: $white!important;
+        }
+    }
+
+}

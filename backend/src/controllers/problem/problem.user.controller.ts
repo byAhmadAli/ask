@@ -17,7 +17,8 @@ import {
 import {
   UsersRepository,
   ProblemRepository,
-  ProblemTypeRepository
+  ProblemTypeRepository,
+  RoleRepository
 } from '../../repositories';
 
 import {
@@ -28,10 +29,18 @@ import {
 
 const ObjectId = require('mongodb').ObjectId;
 
+const ioc = require('socket.io-client');
+
+const client = ioc('http://localhost:5002', {
+  path: '/notification'
+});
+
 export class ProblemUserController {
   constructor(
     @repository(UsersRepository)
     private usersRepository: UsersRepository,
+    @repository(RoleRepository)
+    private roleRepository: RoleRepository,
     @repository(ProblemRepository)
     private problemRepository: ProblemRepository,
     @repository(ProblemTypeRepository)
@@ -50,6 +59,9 @@ export class ProblemUserController {
   ) {
     const findUser = await this.usersRepository.findOne({ where: { email: this.currentUser.id } });
     if (!findUser) throw new HttpErrors.NotFound('User does not exist');
+
+    const helperRole = await this.roleRepository.findOne({ where: { type: 'HELPER' } });
+    if (!helperRole) throw new HttpErrors.NotFound('role does not exist');
     
     let findProblemType;
     if(problem.type === 'other'){
@@ -67,7 +79,9 @@ export class ProblemUserController {
       problem.type = findProblemType.type;
 
       const savedProblem = await this.problemRepository.create(problem);
-
+      
+      client.emit("new_notification", savedProblem, [findUser._id, helperRole._id]);
+      
       return {
         problem_id: savedProblem._id
       }

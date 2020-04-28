@@ -1,0 +1,79 @@
+//
+// Bootstrap
+//
+
+@import "~@laylazi/bootstrap-rtl-scss/scss/functions";
+@import "template/functions";
+@import "~@laylazi/bootstrap-rtl-scss/scss/variables-rtl";
+@import "template/variables.dark";
+@import "user-variables.dark";
+@import "~@laylazi/bootstrap-rtl-scss/scss/mixins-rtl";
+@import "template/mixins";
+@import "~@laylazi/bootstrap-rtl-scss/scss/root";
+@import "~@laylazi/bootstrap-rtl-scss/scss/reboot-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/type-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/images";
+@import "~@laylazi/bootstrap-rtl-scss/scss/code";
+@import "~@laylazi/bootstrap-rtl-scss/scss/grid";
+@import "~@laylazi/bootstrap-rtl-scss/scss/tables";
+@import "~@laylazi/bootstrap-rtl-scss/scss/forms-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/buttons";
+@import "~@laylazi/bootstrap-rtl-scss/scss/transitions";
+@import "~@laylazi/bootstrap-rtl-scss/scss/dropdown-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/button-group-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/input-group-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/custom-forms-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/nav-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/navbar-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/card-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/breadcrumb-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/pagination-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/badge";
+@import "~@laylazi/bootstrap-rtl-scss/scss/jumbotron";
+@import "~@laylazi/bootstrap-rtl-scss/scss/alert-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/progress";
+@import "~@laylazi/bootstrap-rtl-scss/scss/media";
+@import "~@laylazi/bootstrap-rtl-scss/scss/list-group-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/close-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/toasts";
+@import "~@laylazi/bootstrap-rtl-scss/scss/modal-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/tooltip";
+@import "~@laylazi/bootstrap-rtl-scss/scss/popover-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/carousel-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/spinners-rtl";
+@import "~@laylazi/bootstrap-rtl-scss/scss/utilities";
+@import "~@laylazi/bootstrap-rtl-scss/scss/print";
+
+//
+// Template
+//
+
+@import "template/reboot";
+@import "template/layout";
+@import "template/type";
+@import "template/avatar";
+@import "template/forms";
+@import "template/buttons";
+@import "template/input-group";
+@import "template/custom-forms";
+@import "template/badge";
+@import "template/icon";
+@import "template/card";
+@import "template/nav";
+@import "template/dropdown";
+@import "template/list-group";
+@import "template/popover";
+@import "template/close";
+@import "template/message";
+@import "template/dropzone";
+@import "template/feather";
+@import "template/emoji";
+@import "template/zoom";
+@import "template/utilities/opacity";
+@import "template/utilities/fill";
+
+//
+// User
+//
+
+@import "user";

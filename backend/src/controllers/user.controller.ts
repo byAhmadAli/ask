@@ -253,6 +253,9 @@ export class UserController {
 
     const userProfile: any = await this.userService.convertToUserProfile(findUser);
     userProfile.role = getUserRole;
+    if(!getUserRole.includes('USER')){
+      userProfile.roleId = roles[0].roleId;
+    }
     return userProfile;
   }
 }

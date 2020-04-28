@@ -12,32 +12,52 @@ import {
   UsersRepository,
   UserRoleRepository,
   ProblemRepository,
-  AnswerRepository
+  AnswerRepository,
+  RoleRepository,
+  UserSettingsRepository
 } from '../repositories';
 
 import {
   secured,
   SecuredType,
-  TokenServiceBindings
+  TokenServiceBindings,
+  UserServiceBindings,
+  Credentials
 } from '../services';
+import { UserService } from '@loopback/authentication';
 
 import {
   Answer,
-  IِAnswerModel
+  IِAnswerModel,
+  Users
 } from '../models';
 
 const ObjectId = require('mongodb').ObjectId;
+
+const ioc = require('socket.io-client');
+
+const client = ioc('http://localhost:5002', {
+  path: '/notification'
+});
+
 
 export class AnswerController {
   constructor(
     @repository(UsersRepository)
     private usersRepository: UsersRepository,
+    @repository(RoleRepository)
+    private roleRepository: RoleRepository,
     @repository(UserRoleRepository)
     private userRoleRepository: UserRoleRepository,
     @repository(ProblemRepository)
     private problemRepository: ProblemRepository,
     @repository(AnswerRepository)
     private answerRepository: AnswerRepository,
+    @repository(UserSettingsRepository)
+    private userSettingsRepository: UserSettingsRepository,
+
+    @inject(UserServiceBindings.USER_SERVICE)
+    public userService: UserService<Users, Credentials>,
 
     @inject(TokenServiceBindings.CURRENT_USER, { optional: true })
     private currentUser: any,
@@ -75,6 +95,35 @@ export class AnswerController {
       answer.problemId = id;
 
       const savedAnswer = await this.answerRepository.create(answer);
+      const updatedAt = new Date();
+      const unReadHelper = await this.answerRepository.find({where: {problemId: id, unReadHelper: true}});
+      await this.problemRepository.updateById(id, {
+        updatedAt: updatedAt
+      });
+
+      let sendToId;
+      if(!problem.assigned && getUserRole.includes('USER')){
+        const helperRole = await this.roleRepository.findOne({ where: { type: 'HELPER' } });
+        if (!helperRole) throw new HttpErrors.NotFound('role does not exist');
+        sendToId = helperRole._id;
+      }else if(getUserRole.includes('USER')){
+        sendToId = problem.helperId;
+      }else if(getUserRole.includes('HELPER')){
+        sendToId = problem.userId;
+      }
+
+      client.emit("new_notification", {
+        _id: savedAnswer.problemId,
+        unReadCount: unReadHelper.length,
+        update: true
+      }, sendToId);
+
+      client.emit("new_notification", {
+        _id: savedAnswer.problemId,
+        updatedAt: updatedAt,
+        lastAnswer: savedAnswer,
+        update: true
+      }, [sendToId, findUser._id]);
 
       return {
         answer_id: savedAnswer._id
@@ -105,28 +154,58 @@ export class AnswerController {
     }
 
     const getAnswers = await this.answerRepository.find({ where: { problemId: id, deleted: false } });
-    let formated = getAnswers.map(item => {
-      let owner = (problem.userId === findUser._id);
-      let me = (item.userId === findUser._id);
-      let who;
-      if (owner && me) {
-        who = 'أنا';
-      } else if (owner && !me) {
-        who = 'مُساعد';
-      } else if (!owner && me) {
-        who = 'أنا';
-      } else if (!owner && !me) {
-        who = 'مُستخدم';
+    let formated = await getAnswers.map(async (item: any) => {
+      
+      const user = await this.usersRepository.findOne({ where: { _id: item.userId } });
+      if (!user) throw new HttpErrors.NotFound('User does not exist');
+      const settings = await this.userSettingsRepository.findOne({where: {userId: item.userId}});
+      if(!settings) throw new HttpErrors.NotFound('Settings does not exist');
+     
+      let getProfile;
+      if(settings.showNickName){
+        let profile = await this.userService.convertToUserProfile(user);
+        getProfile ={
+          name: profile.name,
+          me: findUser._id === item.userId
+        }
+      }else{
+        getProfile ={
+          name: 'مجهول',
+          me: findUser._id === item.userId
+        }
       }
+      
       return {
-        id: item._id,
-        feeling: item.feeling,
-        description: item.description,
-        owner,
-        who
-      }
+        profile: getProfile,
+        ...item
+      };
     });
 
-    return formated;
+    if (problem.assigned && getUserRole.includes('HELPER')){
+      await this.answerRepository.updateAll({
+        unReadHelper: false
+      }, {
+        problemId: id
+      });
+      
+    }else if(getUserRole.includes('USER')){
+      await this.answerRepository.updateAll({
+        unReadUser: false
+      }, {
+        problemId: id
+      });
+    }
+    
+    if (problem.assigned){
+      client.emit("new_notification", {
+        _id: id,
+        unReadCount: 0,
+        update: true
+      }, findUser._id);
+    }
+    
+    return Promise.all(formated).then((completed) => {
+      return completed;
+    });
   }
 }

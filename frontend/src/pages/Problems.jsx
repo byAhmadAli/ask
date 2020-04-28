@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import client from '../_utils/Client';
 import Loading from '../components/loading';
-import { Link } from 'react-router-dom';
-import NoContent from '../components/no-content';
-import PostCard from '../components/post-card';
 import StatusCard from '../components/status-card';
-import Qoutes from '../components/qoutes';
+import PostCard from '../components/post-card';
+import realTime from '../_services/real-time';
+
 
 class Problems extends Component{
     constructor(props){
@@ -18,9 +17,27 @@ class Problems extends Component{
     }
 
     componentDidMount(){
-        const { profile } = this.props;
-        const baseUrl = (profile && profile.role.includes('ADMIN')) ? 'admin/problems' : 'problems?status=OPEN'
-        client.get(`${process.env.REACT_APP_API_URL}/${baseUrl}`)
+        realTime.socket.on(
+            "show_notification", 
+            res => {
+                let problems = [...this.state.problems];
+                if(res.data.update){
+                    const index = problems.findIndex(item => item._id === res.data._id);
+                    if(index > -1){
+                        const updated = Object.assign(problems[index], res.data);
+                        problems[index] = updated;
+                    }
+                }else{
+                    problems.unshift(res.data);
+                }
+
+                this.setState({
+                    problems: problems.sort((a,b) =>new Date(b.updatedAt) - new Date(a.updatedAt))
+                })
+            }
+        );
+
+        client.get(`${process.env.REACT_APP_API_URL}/problems`)
         .then(res => {
             this.setState({
                 problems: res.data,
@@ -34,53 +51,28 @@ class Problems extends Component{
 
     render(){
         const { problems, loading } = this.state;
-        const { profile, history } = this.props;
+        const { profile } = this.props;
 
         return(
-            <div>
-                <div className="head">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h3>مشاكل</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="container">
+            <>
+                <h2 className="font-bold mb-6">فضفضات</h2>
+                
+                {loading ? (
                     <div className="row">
-                        <div className="col-lg-8">
-                            {profile && profile.role.includes('USER') && 
-                                <StatusCard history={history} />
-                            }
-                            
-                            {loading ? (
-                                <div className="row">
-                                    <Loading color="primary" status="wait" />
-                                </div>
-                            ) : (problems.length > 0 ? 
-                                <div>
-                                    {problems.map((item, i) => {
-                                        return(
-                                            <div key={i} className="row">
-                                                <div className="col-md-12">
-                                                    <PostCard item={item} withLink={true} profile={profile} />
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            :(
-                                <NoContent />
-                            ))}
-                        </div>
-                        
-                        <div className="col-lg-4">
-                            <Qoutes />
-                        </div>
+                        <Loading color="primary" status="wait" />
                     </div>
-                </div>
-            </div>
+                ) : (problems.length > 0 ? 
+                    <>  
+                        {problems.map((item, i) => {
+                            return(
+                                <PostCard key={i} item={item} withLink={true} profile={profile} />
+                            )
+                        })}
+                    </>
+                :(
+                    <StatusCard />
+                ))}
+            </>
         )
     }
 }

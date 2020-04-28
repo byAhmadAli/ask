@@ -4,9 +4,13 @@ import './App.css';
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Link } from "react-router-dom";
 import { ProtectedRoute } from "./_utils/protected.route";
+
 import AppLayout from './layouts/app/AppLayout';
+
 import AuthLayout from './layouts/auth/AuthLayout';
 import ProblemLayout from './layouts/problem/Problem';
+
+import './app-theme/chat/template.scss';
 
 const hist = createBrowserHistory();
 

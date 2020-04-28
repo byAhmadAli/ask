@@ -4,3 +4,4 @@ export * from './user-role.repository';
 export * from './answer.repository';
 export * from './problem.repository';
 export * from './problem-type.repository';
+export * from './user-settings.repository';

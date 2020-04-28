@@ -10,7 +10,9 @@ import {
   UsersRepository,
   UserRoleRepository,
   ProblemRepository,
-  ProblemTypeRepository
+  ProblemTypeRepository,
+  AnswerRepository,
+  UserSettingsRepository
 } from '../../repositories';
 
 import {
@@ -33,6 +35,10 @@ export class ProblemController {
     private problemRepository: ProblemRepository,
     @repository(ProblemTypeRepository)
     private problemTypeRepository: ProblemTypeRepository,
+    @repository(AnswerRepository)
+    private answerRepository: AnswerRepository,
+    @repository(UserSettingsRepository)
+    private userSettingsRepository: UserSettingsRepository,
 
     @inject(UserServiceBindings.USER_SERVICE)
     public userService: UserService<Users, Credentials>,
@@ -44,8 +50,6 @@ export class ProblemController {
   @get('/problems')
   @secured(SecuredType.IS_AUTHENTICATED)
   async getMyProblem(
-    @param.query.string('status')
-    status: string
   ) {
     
     const findUser = await this.usersRepository.findOne({ where: { email: this.currentUser.id } });
@@ -56,14 +60,33 @@ export class ProblemController {
 
     let problems:any = [];
     if(getUserRole.includes('USER')){
-      problems = await this.problemRepository.find({ where: { userId: findUser._id, status, deleted: false } });
+      problems = await this.problemRepository.find({ where: { userId: findUser._id, deleted: false } });
     } else if(getUserRole.includes('HELPER')){
-      problems = await this.problemRepository.find({ where: { status, deleted: false } });
+      problems = await this.problemRepository.find({ where: { deleted: false } });
     } else if(getUserRole.includes('ADMIN')){
-      problems = await this.problemRepository.find({ where: { status, deleted: false } });
+      problems = await this.problemRepository.find();
     }
 
-    return problems.sort((a: any, b: any) => b.createdAt - a.createdAt);
+    let formated =  await problems.map(async (item: any) => {
+      let unReadCount: any = [];
+      if(getUserRole.includes('USER')){
+        unReadCount = await this.answerRepository.find({ where: { problemId: item._id, deleted: false, unReadUser: true } });
+      }else if(getUserRole.includes('HELPER')){
+        unReadCount = await this.answerRepository.find({ where: { problemId: item._id, deleted: false, unReadHelper: true } });
+      }
+
+      let lastAnswer = await this.answerRepository.find({ where: { problemId: item._id, deleted: false } })
+
+      return {
+        lastAnswer: lastAnswer[lastAnswer.length - 1],
+        unReadCount: unReadCount.length,
+        ...item
+      };
+    })
+
+    return Promise.all(formated).then((completed) => {
+      return completed.sort((a: any, b: any) => b.updatedAt - a.updatedAt);
+    });
   }
   
   @get('/problems/{id}')
@@ -89,19 +112,29 @@ export class ProblemController {
     problem.user = (problem.userId === findUser._id);
     problem.helper = (problem.helperId === findUser._id);
     
-    if(getUserRole.includes('ADMIN')){
-      const creator = await this.usersRepository.findOne({ where: { _id: problem.userId } });
-      if (!creator) throw new HttpErrors.NotFound('User does not exist');
-      const creatorProfile = await this.userService.convertToUserProfile(creator);
+    const user = await this.usersRepository.findOne({ where: { _id: problem.userId } });
+    if (!user) throw new HttpErrors.NotFound('User does not exist');
+    const settings = await this.userSettingsRepository.findOne({where: {userId: problem.userId}});
+    if(!settings) throw new HttpErrors.NotFound('Settings does not exist');
 
-      const helper = await this.usersRepository.findOne({ where: { _id: problem.helperId } });
-      if (!helper) throw new HttpErrors.NotFound('User does not exist');
-      const helperProfile = await this.userService.convertToUserProfile(helper);
-
-      return {problem, creatorProfile, helperProfile};
+    let getProfile;
+    if(settings.showNickName){
+      let profile = await this.userService.convertToUserProfile(user);
+      getProfile ={
+        name: profile.name,
+        me: findUser._id === problem.userId
+      }
+    }else{
+      getProfile ={
+        name: 'مجهول',
+        me: findUser._id === problem.userId
+      }
     }
 
-    return problem;
+    return {
+      profile: getProfile,
+      ...problem
+    };
   }
 
   @get('/problem/types')

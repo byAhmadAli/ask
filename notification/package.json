@@ -1,0 +1,21 @@
+{
+  "name": "aounak-app-notifications",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node ."
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [],
+  "author": "Ahmad Ali <hello@ahmadali.me>",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {}
+}

@@ -21,7 +21,15 @@ import {
   JWTService
 } from './services';
 import { genSalt, hash } from 'bcryptjs';
-import { UsersRepository, RoleRepository, UserRoleRepository, AnswerRepository, ProblemRepository, ProblemTypeRepository } from './repositories';
+import { 
+  UsersRepository, 
+  RoleRepository, 
+  UserRoleRepository, 
+  AnswerRepository, 
+  ProblemRepository, 
+  ProblemTypeRepository,
+  UserSettingsRepository
+} from './repositories';
 
 export interface PackageInfo {
   name: string;
@@ -83,10 +91,11 @@ export class UserApplication extends BootMixin(
     const roleRepository: RoleRepository = await this.getRepository(RoleRepository);
     const userRoleRepository: UserRoleRepository = await this.getRepository(UserRoleRepository);
     const problemTypeRepository: ProblemTypeRepository = await this.getRepository(ProblemTypeRepository);
+    const userSettingsRepository: UserSettingsRepository = await this.getRepository(UserSettingsRepository);
 
     let _id;
 
-    //
+    // problem types
     try {
       _id = new ObjectId();
       await problemTypeRepository.create({ _id, type: "أشعر بوحدة شديدة" });
@@ -129,6 +138,11 @@ export class UserApplication extends BootMixin(
         emailVerified: true
       });
 
+      _id = new ObjectId();
+      await userSettingsRepository.create({
+        _id,
+        userId: adminUser._id
+      });
       // user
       _id = new ObjectId();
       password = await this.hashPassword('hash-this');
@@ -140,6 +154,12 @@ export class UserApplication extends BootMixin(
         emailVerified: true
       });
 
+      _id = new ObjectId();
+      await userSettingsRepository.create({
+        _id,
+        userId: user._id
+      });
+
       // helper
       _id = new ObjectId();
       password = await this.hashPassword('hash-this');
@@ -149,6 +169,12 @@ export class UserApplication extends BootMixin(
         email: 'helper@mailinator.com',
         nickname: 'green',
         emailVerified: true
+      });
+
+      _id = new ObjectId();
+      await userSettingsRepository.create({
+        _id,
+        userId: helper._id
       });
     } catch (e) {
       throw e
@@ -179,7 +205,7 @@ export class UserApplication extends BootMixin(
     const answerRepository: AnswerRepository = await this.getRepository(AnswerRepository);
     const problemRepository: ProblemRepository = await this.getRepository(ProblemRepository);
     const problemTypeRepository: ProblemTypeRepository = await this.getRepository(ProblemTypeRepository);
-
+    const userSettingsRepository: UserSettingsRepository = await this.getRepository(UserSettingsRepository);
 
     await usersRepository.deleteAll();
     await roleRepository.deleteAll();
@@ -187,6 +213,7 @@ export class UserApplication extends BootMixin(
     await answerRepository.deleteAll();
     await problemRepository.deleteAll();
     await problemTypeRepository.deleteAll();
+    await userSettingsRepository.deleteAll();
   }
 
   setUpBindings(): void {

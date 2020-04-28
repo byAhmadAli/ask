@@ -4,6 +4,7 @@ import { Route, Link, Switch, Redirect } from "react-router-dom";
 import Login from '../login/Login';
 import Signup from '../signup/Signup';
 import logoImg from './logo.svg';
+import '../../app-theme/theme.scss';
 
 class AuthLayout extends Component{
     constructor(props){

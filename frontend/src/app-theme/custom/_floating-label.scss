@@ -21,6 +21,10 @@
         text-align: right;
         background-color: lighten($secondary, 30%);
         height: 55px;
+        &:focus{
+            background-color: $white;
+            border-color: $primary;
+        }
         &:disabled{
             color: $secondary;
             & + label{
