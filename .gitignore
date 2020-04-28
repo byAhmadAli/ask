@@ -1,7 +1,8 @@
 node_modules
 npm-debug.log
-services/*/dist*
+*/dist*
 .vscode
 .idea
 package-lock.json
 dist/
+frontend/public/theme
