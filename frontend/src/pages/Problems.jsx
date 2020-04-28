@@ -5,7 +5,6 @@ import StatusCard from '../components/status-card';
 import PostCard from '../components/post-card';
 import realTime from '../_services/real-time';
 
-
 class Problems extends Component{
     constructor(props){
         super(props);

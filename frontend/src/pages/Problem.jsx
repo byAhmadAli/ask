@@ -2,10 +2,9 @@ import React, {Component} from 'react';
 import Emoji from '../components/emoji';
 import client from '../_utils/Client';
 import Loading from '../components/loading';
-import PostCard from '../components/post-card';
 import { Link } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import realTime from '../_services/real-time';
+import TextareaAutosize from 'react-textarea-autosize';
 
 const moment = require('moment');
 require("moment/locale/ar")
@@ -19,8 +18,7 @@ class Problem extends Component{
             loading: true,
             loadingAnswers: true,
             feeling: "😶",
-            description: "",
-            dropdownOpen: false
+            description: ""
         }
     }
 
@@ -165,14 +163,8 @@ class Problem extends Component{
         });
     }
 
-    toggle(){
-        this.setState({
-            dropdownOpen: !this.state.dropdownOpen
-        })
-    }
-
     render(){
-        const { problem, loading, loadingAnswers, answers, description, dropdownOpen } = this.state;
+        const { problem, loading, loadingAnswers, answers, description } = this.state;
         const { profile } = this.props;
         
         return(
@@ -245,16 +237,20 @@ class Problem extends Component{
                                                             <i className="icon-md fe-more-vertical"></i>
                                                         </DropdownToggle>
                                                         <DropdownMenu>
-                                                            <DropdownItem className="dropdown-item d-flex align-items-center" tag="a" href="#">
-                                                                Search <span className="mr-auto pr-5 fe-search"></span>
-                                                            </DropdownItem>
-                                                            <DropdownItem className="dropdown-item d-flex align-items-center" tag="a" href="#">
-                                                                Search <span className="mr-auto pr-5 fe-search"></span>
-                                                            </DropdownItem>
+                                                            {profile && profile.role.includes('ADMIN') &&
+                                                                <DropdownItem onClick={this.deleteProblem.bind(this)} className="dropdown-item d-flex align-items-center" tag="a" href="#">
+                                                                    حذف
+                                                                </DropdownItem>
+                                                            }
+                                                            {!problem.assigned && profile && profile.role.includes('HELPER') &&
+                                                                <DropdownItem onClick={this.assigned.bind(this)} className="dropdown-item d-flex align-items-center" tag="a" href="#">
+                                                                    خصصها لي
+                                                                </DropdownItem>
+                                                            }
                                                             {problem.assigned && problem.status !== 'RESOLVED' && 
                                                             profile && profile.role.includes('USER') &&
                                                                 <DropdownItem onClick={this.resolve.bind(this)} className="dropdown-item d-flex align-items-center" tag="a" href="#">
-                                                                    حل المشكلة <span className="mr-auto pr-5 fe-search"></span>
+                                                                    حل المشكلة
                                                                 </DropdownItem>
                                                             }
                                                         </DropdownMenu>
@@ -294,7 +290,7 @@ class Problem extends Component{
 
                                             return(
                                                 <div key={i} className={`message ${!item.profile.me && "message-right"}`}>
-                                                    <div class={`avatar avatar-sm mr-lg-5 ${!item.profile.me ? "ml-4" : "mr-4"}`}>
+                                                    <div className={`avatar avatar-sm mr-lg-5 ${!item.profile.me ? "ml-4" : "mr-4"}`}>
                                                         <span className="avatar-img">{item.feeling}</span>
                                                     </div>
                                                     <div className="message-body">
@@ -326,12 +322,13 @@ class Problem extends Component{
                                             <div className="form-row align-items-center">
                                                 <div className="col">
                                                     <div className="input-group">
-                                                        <textarea 
+                                                        <TextareaAutosize  
                                                             onChange={this.onChange.bind(this)}
                                                             name="description"
                                                             defaultValue={description}
-                                                            className="form-control bg-transparent border-0" id="inputDes" rows="3" placeholder="اكتب تعليقاً..."
-                                                        ></textarea>
+                                                            className="form-control bg-transparent border-0" id="inputDes" rows="1" placeholder="اكتب تعليقاً..."
+                                                            data-autosize="true"
+                                                        ></TextareaAutosize >
                                                     </div>
 
                                                 </div>
@@ -344,7 +341,7 @@ class Problem extends Component{
                                                         </button>
                                                 </div>
                                             </div>
-                                            <div className="">
+                                            <div className="select-feeling">
                                                 <Emoji 
                                                     group="status"
                                                     onChange={this.onChange.bind(this)} />

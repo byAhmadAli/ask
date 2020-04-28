@@ -7,10 +7,6 @@ import logoImg from './logo.svg';
 import '../../app-theme/theme.scss';
 
 class AuthLayout extends Component{
-    constructor(props){
-        super(props);
-        
-    }
 
     isAuthenticated () {
         return auth.isAuthenticated() ? <Redirect from="/login" to="/app" /> : null

@@ -5,10 +5,6 @@ import logoImg from '../auth/logo.svg';
 import StatusCard from '../../components/status-card';
 
 class ProblemLayout extends Component{
-    constructor(props){
-        super(props);
-        
-    }
 
     isAuthenticated () {
         return auth.isAuthenticated() ? <Redirect from="/login" to="/app" /> : null

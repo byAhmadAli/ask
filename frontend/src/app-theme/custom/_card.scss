@@ -1,3 +1,19 @@
+.select-feeling{
+    font-size: 25px;
+    text-align: center;
+    width: 100%;
+    .ask-radio-button-wrapper{
+        > span{
+            label{
+                padding: 0;
+                width: 40px;
+                height: 40px;
+                line-height: 39px;
+            }
+        }
+    }
+}
+
 .card{
     margin-bottom: 30px;
     position: relative;
@@ -35,21 +51,6 @@
         .form-group{
             margin: 0;
             position: relative;
-        }
-        .select-feeling{
-            font-size: 25px;
-            text-align: center;
-            width: 100%;
-            .ask-radio-button-wrapper{
-                > span{
-                    label{
-                        padding: 0;
-                        width: 40px;
-                        height: 40px;
-                        line-height: 39px;
-                    }
-                }
-            }
         }
         textarea{
             resize: none;

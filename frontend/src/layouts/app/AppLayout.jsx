@@ -11,6 +11,8 @@ import Problem from '../../pages/Problem';
 import auth from '../../_services/Auth';
 import realTime from '../../_services/real-time';
 import Settings from '../../pages/Settings';
+import StatusCard from '../../components/status-card';
+import NoContent from '../../components/no-content';
 
 
 class AppLayout extends Component{
@@ -57,7 +59,7 @@ class AppLayout extends Component{
     }
 
     render(){
-        const { profile, profileLoaded, settings, settingsLoaded } = this.state;
+        const { profile, profileLoaded } = this.state;
 
         return(
             <div className="layout">
@@ -67,16 +69,17 @@ class AppLayout extends Component{
 
                         <div className="hide-scrollbar">
                             <div className="container-fluid py-6">
-
-                                <nav className="nav d-block list-discussions-js mb-n6">
                                 {profileLoaded &&
                                     <Switch>
+                                        {profile.role.includes('USER') && 
+                                            <ProtectedRoute exact path="/app/create" component={StatusCard} profile={profile} />
+                                        }
                                         <ProtectedRoute path="/app/problems" component={Problems} profile={profile} />
+                                        <ProtectedRoute exact path="/app/profile" component={NoContent} profile={profile} />
                                         <ProtectedRoute exact path="/app/settings" component={Settings} profile={profile} />
                                         <Redirect exact from="/app" to="/app/problems" />
                                     </Switch>
                                 }
-                                </nav>
 
                             </div>
                         </div>
@@ -88,19 +91,6 @@ class AppLayout extends Component{
                         <ProtectedRoute exact path="/app/problems/:id" component={Problem} profile={profile} />
                     </Switch>
                 }
-
-                {/* <div className="main main-visible">
-                    <div className="chat flex-column justify-content-center text-center">
-                        <div className="container-xxl">
-                        {profileLoaded && 
-                            <Switch>
-                                <ProtectedRoute exact path="/app/problems" component={StatusCard} />
-                                <ProtectedRoute exact path="/app/problems/:id" component={Problem} profile={profile} />
-                            </Switch>
-                        }
-                        </div>
-                    </div>
-                </div> */}
                 
             </div>
         )

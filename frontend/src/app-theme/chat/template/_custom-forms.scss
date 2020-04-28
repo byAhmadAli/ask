@@ -4,7 +4,16 @@
 
 .custom-switch {
 
+    .custom-control-input:not(:disabled):active~.custom-control-label::before {
+        color: $white;
+        background-color: lighten($primary, 15%);
+        border-color: lighten($primary, 15%);
+    }
+
     .custom-control-label {
+        &::before{
+            height: 18px;
+        }
         &::after {
             background-color: $white!important;
         }

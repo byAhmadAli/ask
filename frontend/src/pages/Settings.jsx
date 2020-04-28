@@ -5,7 +5,12 @@ class Settings extends Component{
     constructor(props){
         super(props);
         this.state = {
-            settings: {}
+            settings: {
+                showNickName: false,
+                enableNotifications: false,
+                enableSounds: false,
+                darkMode: false
+            }
         }
     }
 
@@ -75,7 +80,7 @@ class Settings extends Component{
                                         <input
                                             disabled={true}
                                             checked={settings.enableNotifications}
-                                            //onChange={this.onChange.bind(this)}
+                                            value={settings.enableNotifications}
                                             name="enableNotifications" type="checkbox" className="custom-control-input" id="custom-switch-2" />
                                         <label className="custom-control-label" htmlFor="custom-switch-2"></label>
                                     </div>
@@ -90,7 +95,6 @@ class Settings extends Component{
                                         <input
                                             disabled={true}
                                             checked={settings.enableSounds}
-                                            // onChange={this.onChange.bind(this)}
                                             name="enableSounds" type="checkbox" className="custom-control-input" id="custom-switch-3" />
                                         <label className="custom-control-label" htmlFor="custom-switch-3"></label>
                                     </div>
@@ -105,7 +109,6 @@ class Settings extends Component{
                                         <input
                                             disabled={true}
                                             checked={settings.darkMode}
-                                           // onChange={this.onChange.bind(this)}
                                             name="darkMode" type="checkbox" className="custom-control-input" id="custom-switch-4" />
                                         <label className="custom-control-label" htmlFor="custom-switch-4"></label>
                                     </div>

@@ -8,6 +8,7 @@ import auth from '../_services/Auth';
 import {
     Card, CardBody, Row
 } from 'reactstrap';
+import TextareaAutosize from 'react-textarea-autosize';
 
 class StatusCard extends Component {
     constructor(props){
@@ -54,7 +55,7 @@ class StatusCard extends Component {
 
         client.post(`${process.env.REACT_APP_API_URL}/problems/create`, data)
         .then(res => {
-            this.props.history.push(`/app/problems/show/${res.data.problem_id}`);
+            this.props.history.push(`/app/problems/${res.data.problem_id}`);
         })
         .catch((error) => {
             console.log(error);
@@ -75,13 +76,13 @@ class StatusCard extends Component {
                 <Card className="status">
                     <CardBody>
                         <div className="form-group">
-                            <textarea 
+                            <TextareaAutosize 
                                 id="description"
                                 onChange={this.onChange.bind(this)}
                                 name="description"
                                 defaultValue={description}
-                                className="form-control" id="inputDes" rows="3" placeholder="عبّر عن شعورك اليوم؟"
-                            ></textarea>
+                                className="form-control" rows="3" placeholder="عبّر عن شعورك اليوم؟"
+                            ></TextareaAutosize>
                         </div>
                         <div className="select-feeling">
                             <Emoji 

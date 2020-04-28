@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
-import auth from '../../_services/Auth';
 import { Link } from 'react-router-dom';
 import client from '../../_utils/Client';
-
-const faker = require('faker');
 
 class Signup extends Component{
     constructor(props){
