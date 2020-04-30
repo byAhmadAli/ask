@@ -65,6 +65,7 @@
     "@types/passport-jwt": "^3.0.3",
     "@types/validator": "^10.11.3",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
     "faker": "^4.1.0",
     "lodash": "^4.17.15",
     "loopback-connector-mongodb": "^4.2.0",

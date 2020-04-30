@@ -31,6 +31,8 @@ import {
   UserSettingsRepository
 } from './repositories';
 
+import * as dotenv from 'dotenv';
+
 export interface PackageInfo {
   name: string;
   version: string;
@@ -47,6 +49,8 @@ export class UserApplication extends BootMixin(
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
+
+    dotenv.config({ path: '.env' });
 
     this.setUpBindings();
 
