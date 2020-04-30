@@ -3,7 +3,7 @@ const io = require('socket.io-client');
 
 class RealTime{
     constructor(){
-        this.socket = io.connect("http://localhost:5002", {
+        this.socket = io.connect("http://fadfed.me/notification", {
             reconnection: true,
             path: '/notification'
         });
