@@ -15,7 +15,7 @@ module.exports = {
       }
     },
     {
-      name: 'Notification',
+      name: 'Noti',
       script: 'notification/index.js',
       instances: 1,
       autorestart: true,
