@@ -36,7 +36,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 const ioc = require('socket.io-client');
 
-const client = ioc('https://fadfed.me/api/notification', {
+const client = ioc('https://fadfed.me/notification', {
   path: '/notification'
 });
 
