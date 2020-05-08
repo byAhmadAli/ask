@@ -3,8 +3,9 @@ const io = require('socket.io-client');
 
 class RealTime{
     constructor(){
-        this.socket = io.connect("https://fadfed.me/socket.io", {
-            reconnection: true
+        this.socket = io.connect("https://fadfed.me", {
+            reconnection: true,
+            path: '/socket.io'
         });
     }
 }
