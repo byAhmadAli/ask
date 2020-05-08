@@ -17,7 +17,8 @@ import { HttpErrors } from '@loopback/rest';
 import {
   UsersRepository,
   UserRoleRepository,
-  RoleRepository
+  RoleRepository,
+  UserSettingsRepository
 } from '../repositories';
 import {
   Credentials,
@@ -56,6 +57,8 @@ export class UserController {
     private userRoleRepository: UserRoleRepository,
     @repository(RoleRepository)
     private roleRepository: RoleRepository,
+    @repository(UserSettingsRepository)
+    private userSettingsRepository: UserSettingsRepository,
 
     @inject(TokenServiceBindings.CURRENT_USER, { optional: true })
     private currentUser: any,
@@ -92,6 +95,11 @@ export class UserController {
       if (!userRole) throw new HttpErrors.UnprocessableEntity('Role not found');
 
       await this.userRoleRepository.create({ _id, userType: "USER", roleId: userRole._id, userId: savedUser._id });
+      _id = new ObjectId();
+      await this.userSettingsRepository.create({
+        _id,
+        userId: savedUser._id
+      });
 
       const userProfile = this.userService.convertToUserProfile(user);
       const token = await this.jwtService.generateToken(userProfile);
